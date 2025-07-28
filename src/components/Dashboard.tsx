@@ -3,6 +3,39 @@ import { api } from "../../convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ProjectEditor } from "./ProjectEditor";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { 
+  MoreHorizontal, 
+  Edit, 
+  Copy, 
+  Trash2, 
+  Plus, 
+  Eye,
+  EyeOff,
+  Calendar
+} from "lucide-react";
 
 export function Dashboard() {
   const userProjects = useQuery(api.projects.getUserProjects);
@@ -13,6 +46,7 @@ export function Dashboard() {
   const [newProjectTitle, setNewProjectTitle] = useState("");
   const [newProjectPublic, setNewProjectPublic] = useState(false);
   const [editingProject, setEditingProject] = useState<string | null>(null);
+  const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,16 +69,42 @@ export function Dashboard() {
     }
   };
 
-  const handleDeleteProject = async (projectId: string) => {
-    if (!confirm("Are you sure you want to delete this project?")) return;
+  const handleDeleteProject = async () => {
+    if (projectToDelete) {
+      try {
+        await deleteProject({ projectId: projectToDelete as any });
+        toast.success("Project deleted successfully!");
+        setProjectToDelete(null);
+      } catch (error) {
+        toast.error("Failed to delete project");
+        console.error(error);
+      }
+    }
+  };
 
+  const handleDuplicateProject = async (projectId: string) => {
     try {
-      await deleteProject({ projectId: projectId as any });
-      toast.success("Project deleted successfully!");
+      // Create a duplicate by creating a new project with the same data
+      const originalProject = userProjects?.find(p => p._id === projectId);
+      if (originalProject) {
+        await createProject({
+          title: `${originalProject.title} (Copy)`,
+          isPublic: false, // Always make copies private
+        });
+        toast.success("Project duplicated successfully!");
+      }
     } catch (error) {
-      toast.error("Failed to delete project");
+      toast.error("Failed to duplicate project");
       console.error(error);
     }
+  };
+
+  const formatDate = (timestamp: number) => {
+    return new Date(timestamp).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   if (editingProject) {
@@ -57,70 +117,61 @@ export function Dashboard() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">My Projects</h1>
-        <button
-          onClick={() => setIsCreating(true)}
-          className="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition-colors"
-        >
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800">
+      <header className="flex items-center justify-between p-6 border-b border-gray-200/60 dark:border-gray-700/60 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl">
+        <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          My Projects
+        </h1>
+        <Button onClick={() => setIsCreating(true)} size="lg">
+          <Plus className="w-4 h-4 mr-2" />
           New Project
-        </button>
-      </div>
+        </Button>
+      </header>
 
-      {/* Create Project Modal */}
-      {isCreating && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">Create New Project</h2>
-            <form onSubmit={handleCreateProject}>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Project Title
-                </label>
-                <input
-                  type="text"
+      {/* Create Project Dialog */}
+      <Dialog open={isCreating} onOpenChange={setIsCreating}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New Project</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleCreateProject}>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="title">Project Title</Label>
+                <Input
+                  id="title"
                   value={newProjectTitle}
                   onChange={(e) => setNewProjectTitle(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Enter project title..."
                   required
                 />
               </div>
-              <div className="mb-6">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={newProjectPublic}
-                    onChange={(e) => setNewProjectPublic(e.target.checked)}
-                    className="mr-2"
-                  />
-                  <span className="text-sm text-gray-700">Make this project public</span>
-                </label>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="public"
+                  checked={newProjectPublic}
+                  onCheckedChange={setNewProjectPublic}
+                />
+                <Label htmlFor="public">Make project public</Label>
               </div>
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsCreating(false);
-                    setNewProjectTitle("");
-                    setNewProjectPublic(false);
-                  }}
-                  className="flex-1 px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover transition-colors"
-                >
-                  Create
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+            </div>
+            <DialogFooter className="mt-6">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setIsCreating(false);
+                  setNewProjectTitle("");
+                  setNewProjectPublic(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">Create Project</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       {/* Projects Grid */}
       {userProjects === undefined ? (
