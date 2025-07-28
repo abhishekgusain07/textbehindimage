@@ -4,38 +4,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { TextBehindImageEditor } from "./TextBehindImageEditor";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { 
-  MoreHorizontal, 
-  Edit, 
-  Copy, 
-  Trash2, 
-  Plus, 
-  Eye,
-  EyeOff,
-  Calendar
-} from "lucide-react";
+import { Plus } from "lucide-react";
 
 export function Dashboard() {
   const userProjects = useQuery(api.projects.getUserProjects);
@@ -46,7 +19,7 @@ export function Dashboard() {
   const [newProjectTitle, setNewProjectTitle] = useState("");
   const [newProjectPublic, setNewProjectPublic] = useState(false);
   const [editingProject, setEditingProject] = useState<string | null>(null);
-  const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
+  const [deletingProjects, setDeletingProjects] = useState<Set<string>>(new Set());
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,16 +42,23 @@ export function Dashboard() {
     }
   };
 
-  const handleDeleteProject = async () => {
-    if (projectToDelete) {
-      try {
-        await deleteProject({ projectId: projectToDelete as any });
-        toast.success("Project deleted successfully!");
-        setProjectToDelete(null);
-      } catch (error) {
-        toast.error("Failed to delete project");
-        console.error(error);
-      }
+  const handleDeleteProject = async (projectId: string) => {
+    // Add project to deleting set for visual feedback
+    setDeletingProjects(prev => new Set(prev).add(projectId));
+    
+    try {
+      await deleteProject({ projectId: projectId as any });
+      toast.success("Project deleted successfully!");
+    } catch (error) {
+      toast.error("Failed to delete project");
+      console.error(error);
+    } finally {
+      // Remove project from deleting set
+      setDeletingProjects(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(projectId);
+        return newSet;
+      });
     }
   };
 
@@ -240,14 +220,23 @@ export function Dashboard() {
                   <button
                     onClick={() => setEditingProject(project._id)}
                     className="flex-1 px-3 py-2 text-sm bg-primary text-white rounded hover:bg-primary-hover transition-colors"
+                    disabled={deletingProjects.has(project._id)}
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDeleteProject(project._id)}
-                    className="px-3 py-2 text-sm text-red-600 border border-red-300 rounded hover:bg-red-50 transition-colors"
+                    disabled={deletingProjects.has(project._id)}
+                    className="px-3 py-2 text-sm text-red-600 border border-red-300 rounded hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                   >
-                    Delete
+                    {deletingProjects.has(project._id) ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
+                        Deleting...
+                      </>
+                    ) : (
+                      'Delete'
+                    )}
                   </button>
                 </div>
               </div>
