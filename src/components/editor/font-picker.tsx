@@ -22,12 +22,14 @@ interface FontFamilyPickerProps {
   attribute: string;
   currentFont: string;
   handleAttributeChange: (attribute: string, value: string) => void;
+  userId: string;
 }
 
 const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
   attribute,
   currentFont,
   handleAttributeChange,
+  userId
 }) => {
   return (
     <Popover>

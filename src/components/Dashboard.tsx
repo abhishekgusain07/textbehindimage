@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ProjectEditor } from "./ProjectEditor";
+import { TextBehindImageEditor } from "./TextBehindImageEditor";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -109,7 +109,7 @@ export function Dashboard() {
 
   if (editingProject) {
     return (
-      <ProjectEditor
+      <TextBehindImageEditor
         projectId={editingProject}
         onBack={() => setEditingProject(null)}
       />

@@ -45,6 +45,7 @@ interface TextCustomizerProps {
   handleAttributeChange: (id: number, attribute: string, value: any) => void;
   removeTextSet: (id: number) => void;
   duplicateTextSet: (textSet: any) => void;
+  userId: string;
 }
 
 const TextCustomizer: React.FC<TextCustomizerProps> = ({
@@ -52,6 +53,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({
   handleAttributeChange,
   removeTextSet,
   duplicateTextSet,
+  userId,
 }) => {
   const [activeControl, setActiveControl] = useState<string | null>(null);
 
@@ -130,6 +132,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({
                 handleAttributeChange={(attribute, value) =>
                   handleAttributeChange(textSet.id, attribute, value)
                 }
+                userId={userId}
               />
             )}
 
@@ -288,6 +291,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({
             handleAttributeChange={(attribute, value) =>
               handleAttributeChange(textSet.id, attribute, value)
             }
+            userId={userId}
           />
 
           <ColorPicker
