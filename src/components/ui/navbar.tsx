@@ -70,6 +70,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
       setIsLoggingOut(true);
       await signOut();
       toast.success("Logged out successfully");
+      navigate("/");
     } catch (error) {
       toast.error("Failed to log out. Please try again.");
       console.error("Logout error:", error);
@@ -161,7 +162,10 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
             Dashboard
           </NavbarButton>
           <NavbarButton
-            onClick={handleLogout}
+            onClick={() => {
+              handleLogout();
+              setIsMobileMenuOpen(false);
+            }}
             disabled={isLoggingOut}
             variant="secondary"
             className={`w-full relative ${isLoggingOut ? "opacity-70" : ""}`}
