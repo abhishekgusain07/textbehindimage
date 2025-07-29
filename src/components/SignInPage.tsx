@@ -42,14 +42,14 @@ export function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: `linear-gradient(to bottom right, var(--bg-hero-gradient-from), var(--bg-hero-gradient-to))` }}>
       <div className="w-full max-w-md">
-        <Card className="shadow-xl">
+        <Card className="" style={{ boxShadow: 'var(--shadow-xl)', background: 'var(--bg-card)' }}>
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold text-gray-900">
+            <CardTitle className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>
               Welcome to Text Behind Image
             </CardTitle>
-            <CardDescription className="text-gray-600">
+            <CardDescription style={{ color: 'var(--text-secondary)' }}>
               Create stunning text behind image effects
             </CardDescription>
           </CardHeader>

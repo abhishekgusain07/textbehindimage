@@ -2,13 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Light theme variables */
 :root {
-  --color-light: #ffffff;
-  --color-dark: #171717;
+  /* Backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-accent: #f3f4f6;
+  --bg-card: #ffffff;
+  --bg-gradient-from: #dbeafe;
+  --bg-gradient-to: #e0e7ff;
+  --bg-hero-gradient-from: #dbeafe;
+  --bg-hero-gradient-via: #ffffff;
+  --bg-hero-gradient-to: #faf5ff;
+  --bg-cta-gradient-from: #2563eb;
+  --bg-cta-gradient-to: #7c3aed;
+  
+  /* Text colors */
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --text-accent: #475569;
+  --text-white: #ffffff;
+  --text-blue: #2563eb;
+  --text-purple: #7c3aed;
+  --text-green: #059669;
+  --text-red: #dc2626;
+  
+  /* Border colors */
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+  --border-accent: #cbd5e1;
+  
+  /* Shadow colors */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* Button colors */
+  --btn-primary: #3b82f6;
+  --btn-primary-hover: #2563eb;
+  --btn-secondary: #6b7280;
+  --btn-secondary-hover: #4b5563;
+}
+
+/* Dark theme variables */
+:root[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --bg-accent: #475569;
+  --bg-card: #1e293b;
+  --bg-gradient-from: #1e293b;
+  --bg-gradient-to: #3730a3;
+  --bg-hero-gradient-from: #1e1b4b;
+  --bg-hero-gradient-via: #1e293b;
+  --bg-hero-gradient-to: #312e81;
+  --bg-cta-gradient-from: #3b82f6;
+  --bg-cta-gradient-to: #8b5cf6;
+  
+  /* Text colors */
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-accent: #e2e8f0;
+  --text-white: #ffffff;
+  --text-blue: #60a5fa;
+  --text-purple: #a78bfa;
+  --text-green: #34d399;
+  --text-red: #f87171;
+  
+  /* Border colors */
+  --border-primary: #374151;
+  --border-secondary: #4b5563;
+  --border-accent: #6b7280;
+  
+  /* Shadow colors - darker shadows for dark mode */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+  
+  /* Button colors */
+  --btn-primary: #3b82f6;
+  --btn-primary-hover: #60a5fa;
+  --btn-secondary: #6b7280;
+  --btn-secondary-hover: #9ca3af;
 }
 
 .accent-text {
-  @apply text-slate-600;
+  color: var(--text-accent);
 }
 
 body {
@@ -28,16 +113,38 @@ body {
     "Segoe UI Emoji",
     "Segoe UI Symbol",
     "Noto Color Emoji";
-  color: var(--color-dark);
-  background: var(--color-light);
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* only use this to update the style of the auth input fields. use a different class for all other input fields */
 .auth-input-field {
-  @apply w-full px-4 py-3 rounded-container bg-white border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow shadow-sm hover:shadow;
+  @apply w-full px-4 py-3 rounded-container outline-none transition-all;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-input-field:focus {
+  border-color: var(--btn-primary);
+  box-shadow: 0 0 0 1px var(--btn-primary);
+}
+
+.auth-input-field:hover {
+  box-shadow: var(--shadow-md);
 }
 
 /* only use this to update the style of the auth buttons. use the button class for all other buttons */
 .auth-button {
-  @apply w-full px-4 py-3 rounded bg-primary text-white font-semibold hover:bg-primary-hover transition-colors shadow-sm hover:shadow disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply w-full px-4 py-3 rounded font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+  background: var(--btn-primary);
+  color: var(--text-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-button:hover:not(:disabled) {
+  background: var(--btn-primary-hover);
+  box-shadow: var(--shadow-md);
 }

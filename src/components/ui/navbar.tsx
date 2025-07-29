@@ -14,13 +14,16 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/hooks/useUser";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { useDarkMode } from "@/hooks/useDarkMode";
 import { toast } from "sonner";
+import { Sun, Moon } from "lucide-react";
 
 export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useUser();
   const isLoggedIn = !!user;
   const navigate = useNavigate();
   const { signOut } = useAuthActions();
+  const { theme, toggleTheme } = useDarkMode();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -84,59 +87,91 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
     navigate("/sign-in");
   };
 
+  // Theme toggle button component
+  const ThemeToggle = ({ className = "" }: { className?: string }) => (
+    <button
+      onClick={toggleTheme}
+      className={`p-2 rounded-lg transition-colors ${className}`}
+      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-accent)'}
+      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+    >
+      {theme === 'light' ? (
+        <Moon className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} />
+      ) : (
+        <Sun className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
+      )}
+    </button>
+  );
+
   // Render avatar skeleton during loading
   const renderAuthUI = () => {
     if (isLoading) {
       return (
-        <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse flex items-center justify-center">
-          <div className="h-5 w-5 rounded-full bg-gray-300"></div>
+        <div className="h-10 w-10 rounded-full animate-pulse flex items-center justify-center" style={{ background: 'var(--bg-accent)' }}>
+          <div className="h-5 w-5 rounded-full" style={{ background: 'var(--bg-tertiary)' }}></div>
         </div>
       );
     }
 
     if (isLoggedIn) {
       return (
-        <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-medium cursor-pointer hover:opacity-90 transition-opacity"
-          >
-            {getUserInitial()}
-          </button>
-          {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
-              <div className="py-1">
-                <button
-                  onClick={() => navigate("/dashboard")}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:cursor-pointer"
-                >
-                  Dashboard
-                </button>
-                <button
-                  onClick={handleLogout}
-                  disabled={isLoggingOut}
-                  className={`block w-full text-left px-4 py-2 text-sm ${isLoggingOut ? "text-gray-400 bg-gray-50" : "text-red-600 hover:bg-gray-100 hover:cursor-pointer"} relative`}
-                >
-                  {isLoggingOut ? (
-                    <>
-                      <span className="opacity-50">Logging out...</span>
-                      <span className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 border-2 border-t-transparent border-red-300 rounded-full animate-spin"></span>
-                    </>
-                  ) : (
-                    "Log out"
-                  )}
-                </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-medium cursor-pointer hover:opacity-90 transition-opacity"
+            >
+              {getUserInitial()}
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 rounded-md z-50" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-lg)', border: `1px solid var(--border-primary)` }}>
+                <div className="py-1">
+                  <button
+                    onClick={() => navigate("/dashboard")}
+                    className="block w-full text-left px-4 py-2 text-sm hover:cursor-pointer transition-colors"
+                    style={{ color: 'var(--text-primary)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-accent)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="block w-full text-left px-4 py-2 text-sm hover:cursor-pointer relative transition-colors"
+                    style={{
+                      color: isLoggingOut ? 'var(--text-tertiary)' : 'var(--text-red)',
+                      background: isLoggingOut ? 'var(--bg-accent)' : 'transparent'
+                    }}
+                    onMouseEnter={(e) => !isLoggingOut && (e.currentTarget.style.background = 'var(--bg-accent)')}
+                    onMouseLeave={(e) => !isLoggingOut && (e.currentTarget.style.background = 'transparent')}
+                  >
+                    {isLoggingOut ? (
+                      <>
+                        <span className="opacity-50">Logging out...</span>
+                        <span className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--text-red)' }}></span>
+                      </>
+                    ) : (
+                      "Log out"
+                    )}
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       );
     }
 
     return (
-      <NavbarButton variant="secondary" onClick={handleLogin}>
-        Login
-      </NavbarButton>
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <NavbarButton variant="secondary" onClick={handleLogin}>
+          Login
+        </NavbarButton>
+      </div>
     );
   };
 
@@ -144,13 +179,17 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const renderMobileAuthUI = () => {
     if (isLoading) {
       return (
-        <div className="w-full h-10 bg-gray-200 rounded-md animate-pulse"></div>
+        <div className="w-full h-10 rounded-md animate-pulse" style={{ background: 'var(--bg-accent)' }}></div>
       );
     }
 
     if (isLoggedIn) {
       return (
         <>
+          <div className="flex items-center justify-between w-full mb-4">
+            <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Theme</span>
+            <ThemeToggle />
+          </div>
           <NavbarButton
             onClick={() => {
               navigate("/dashboard");
@@ -184,16 +223,22 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
     }
 
     return (
-      <NavbarButton
-        onClick={() => {
-          navigate("/sign-in");
-          setIsMobileMenuOpen(false);
-        }}
-        variant="primary"
-        className="w-full"
-      >
-        Login
-      </NavbarButton>
+      <>
+        <div className="flex items-center justify-between w-full mb-4">
+          <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Theme</span>
+          <ThemeToggle />
+        </div>
+        <NavbarButton
+          onClick={() => {
+            navigate("/sign-in");
+            setIsMobileMenuOpen(false);
+          }}
+          variant="primary"
+          className="w-full"
+        >
+          Login
+        </NavbarButton>
+      </>
     );
   };
 
