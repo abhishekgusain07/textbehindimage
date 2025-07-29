@@ -103,18 +103,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
           
           toggleTheme();
         }}
-        className={`p-2 rounded-lg border transition-colors hover:bg-gray-100 z-50 dark:hover:bg-gray-700 ${className}`}
-        style={{
-          background: theme === 'light' ? '#ffffff' : '#1f2937',
-          color: theme === 'light' ? '#1f2937' : '#f1f5f9',
-          borderColor: theme === 'light' ? '#e5e7eb' : '#374151',
-          minWidth: '40px',
-          minHeight: '40px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer'
-        }}
+        className={`p-2 rounded-lg border transition-colors bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 min-w-[40px] min-h-[40px] flex items-center z-50 justify-center cursor-pointer ${className}`}
         title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
       >
         {theme === 'light' ? '🌙' : '☀️'}
@@ -126,8 +115,8 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const renderAuthUI = () => {
     if (isLoading) {
       return (
-        <div className="h-10 w-10 rounded-full animate-pulse flex items-center justify-center" style={{ background: 'var(--bg-accent)' }}>
-          <div className="h-5 w-5 rounded-full" style={{ background: 'var(--bg-tertiary)' }}></div>
+        <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center">
+          <div className="h-5 w-5 rounded-full bg-gray-300 dark:bg-gray-600"></div>
         </div>
       );
     }
@@ -144,32 +133,27 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
               {getUserInitial()}
             </button>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 rounded-md z-50" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-lg)', border: `1px solid var(--border-primary)` }}>
+              <div className="absolute right-0 mt-2 w-48 rounded-md z-50 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600">
                 <div className="py-1">
                   <button
                     onClick={() => navigate("/dashboard")}
-                    className="block w-full text-left px-4 py-2 text-sm hover:cursor-pointer transition-colors"
-                    style={{ color: 'var(--text-primary)' }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-accent)'}
-                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 hover:cursor-pointer transition-colors"
                   >
                     Dashboard
                   </button>
                   <button
                     onClick={handleLogout}
                     disabled={isLoggingOut}
-                    className="block w-full text-left px-4 py-2 text-sm hover:cursor-pointer relative transition-colors"
-                    style={{
-                      color: isLoggingOut ? 'var(--text-tertiary)' : 'var(--text-red)',
-                      background: isLoggingOut ? 'var(--bg-accent)' : 'transparent'
-                    }}
-                    onMouseEnter={(e) => !isLoggingOut && (e.currentTarget.style.background = 'var(--bg-accent)')}
-                    onMouseLeave={(e) => !isLoggingOut && (e.currentTarget.style.background = 'transparent')}
+                    className={`block w-full text-left px-4 py-2 text-sm hover:cursor-pointer relative transition-colors ${
+                      isLoggingOut 
+                        ? 'text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700' 
+                        : 'text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
                   >
                     {isLoggingOut ? (
                       <>
                         <span className="opacity-50">Logging out...</span>
-                        <span className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--text-red)' }}></span>
+                        <span className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 border-2 border-t-transparent border-red-400 rounded-full animate-spin"></span>
                       </>
                     ) : (
                       "Log out"
@@ -197,7 +181,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const renderMobileAuthUI = () => {
     if (isLoading) {
       return (
-        <div className="w-full h-10 rounded-md animate-pulse" style={{ background: 'var(--bg-accent)' }}></div>
+        <div className="w-full h-10 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
       );
     }
 
@@ -205,7 +189,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
       return (
         <>
           <div className="flex items-center justify-between w-full mb-4">
-            <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Theme</span>
+            <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Theme</span>
             <ThemeToggle />
           </div>
           <NavbarButton
@@ -243,7 +227,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
     return (
       <>
         <div className="flex items-center justify-between w-full mb-4">
-          <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Theme</span>
+          <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Theme</span>
           <ThemeToggle />
         </div>
         <NavbarButton
@@ -289,9 +273,9 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
                 key={`mobile-link-${idx}`}
                 href={item.link}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300"
+                className="relative text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
-                <span className="block">{item.name}</span>
+                <span className="block font-medium">{item.name}</span>
               </a>
             ))}
             <div className="flex w-full flex-col gap-4">
