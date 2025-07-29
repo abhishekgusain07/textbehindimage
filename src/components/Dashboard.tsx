@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { FocusCards } from "@/components/ui/focus-card";
 import { Plus } from "lucide-react";
 
 export function Dashboard() {
@@ -97,16 +98,17 @@ export function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen" style={{ background: `linear-gradient(to bottom right, var(--bg-secondary), var(--bg-primary), var(--bg-tertiary))` }}>
-      <header className="flex items-center justify-between p-6 backdrop-blur-xl" style={{ borderBottom: `1px solid var(--border-primary)`, background: 'var(--bg-card)' }}>
-        <h1 className="text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(to right, var(--text-blue), var(--text-purple))` }}>
-          My Projects
-        </h1>
-        <Button onClick={() => setIsCreating(true)} size="lg">
-          <Plus className="w-4 h-4 mr-2" />
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
+      <div className="flex justify-end p-6">
+        <Button 
+          onClick={() => setIsCreating(true)} 
+          size="lg"
+          className="bg-white text-black border border-gray-200 hover:bg-gray-50 shadow-lg hover:shadow-xl transition-all duration-200"
+        >
+          <Plus className="w-5 h-5 mr-2" />
           New Project
         </Button>
-      </header>
+      </div>
 
       {/* Create Project Dialog */}
       <Dialog open={isCreating} onOpenChange={setIsCreating}>
@@ -154,108 +156,38 @@ export function Dashboard() {
       </Dialog>
 
       {/* Projects Grid */}
-      {userProjects === undefined ? (
-        <div className="flex justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      ) : userProjects.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'var(--bg-accent)' }}>
-            <svg className="w-12 h-12" style={{ color: 'var(--text-tertiary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
+      <div className="flex-1 p-6">
+        {userProjects === undefined ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
-          <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>No projects yet</h3>
-          <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>Create your first text behind image project to get started</p>
-          <button
-            onClick={() => setIsCreating(true)}
-            className="px-6 py-2 font-semibold rounded-lg transition-colors"
-            style={{ 
-              background: 'var(--btn-primary)',
-              color: 'var(--text-white)'
-            }}
-          >
-            Create Your First Project
-          </button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {userProjects.map((project) => (
-            <div key={project._id} className="rounded-lg overflow-hidden" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-lg)' }}>
-              <div className="aspect-video relative" style={{ background: 'var(--bg-accent)' }}>
-                {project.processedImageUrl ? (
-                  <img
-                    src={project.processedImageUrl}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : project.originalImageUrl ? (
-                  <img
-                    src={project.originalImageUrl}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center" style={{ color: 'var(--text-tertiary)' }}>
-                    <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              <div className="p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-lg" style={{ color: 'var(--text-primary)' }}>{project.title}</h3>
-                  <div className="flex gap-2">
-                    {project.isPublic && (
-                      <span className="px-2 py-1 text-xs rounded" style={{ background: 'var(--bg-tertiary)', color: 'var(--text-green)' }}>
-                        Public
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>
-                  {project.textLayers.length} text layer{project.textLayers.length !== 1 ? 's' : ''}
-                </p>
-                <p className="text-xs mb-4" style={{ color: 'var(--text-tertiary)' }}>
-                  Updated {new Date(project.updatedAt).toLocaleDateString()}
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setEditingProject(project._id)}
-                    className="flex-1 px-3 py-2 text-sm rounded transition-colors"
-                    style={{ 
-                      background: 'var(--btn-primary)',
-                      color: 'var(--text-white)'
-                    }}
-                    disabled={deletingProjects.has(project._id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDeleteProject(project._id)}
-                    disabled={deletingProjects.has(project._id)}
-                    className="px-3 py-2 text-sm rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                    style={{ 
-                      color: 'var(--text-red)',
-                      border: `1px solid var(--text-red)`
-                    }}
-                  >
-                    {deletingProjects.has(project._id) ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2" style={{ borderColor: 'var(--text-red)' }}></div>
-                        Deleting...
-                      </>
-                    ) : (
-                      'Delete'
-                    )}
-                  </button>
-                </div>
-              </div>
+        ) : userProjects.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-6 bg-gradient-to-br from-blue-50 to-purple-50">
+              <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
             </div>
-          ))}
-        </div>
-      )}
+            <h3 className="text-2xl font-semibold mb-3 text-gray-900">No projects yet</h3>
+            <p className="text-gray-600 mb-8 max-w-md mx-auto">Create your first text behind image project to get started with amazing visual effects</p>
+            <Button
+              onClick={() => setIsCreating(true)}
+              size="lg"
+              className="bg-white text-black border border-gray-200 hover:bg-gray-50 shadow-lg hover:shadow-xl transition-all duration-200"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              Create Your First Project
+            </Button>
+          </div>
+        ) : (
+          <FocusCards 
+            projects={userProjects}
+            onEdit={setEditingProject}
+            onDelete={handleDeleteProject}
+            deletingProjects={deletingProjects}
+          />
+        )}
+      </div>
     </div>
   );
 }
