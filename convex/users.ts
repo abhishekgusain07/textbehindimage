@@ -1,6 +1,6 @@
-import { v } from "convex/values";
-import { query, mutation } from "./_generated/server";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { v } from 'convex/values';
+import { query, mutation } from './_generated/server';
+import { getAuthUserId } from '@convex-dev/auth/server';
 
 // Create or get user profile
 export const createOrGetUserProfile = mutation({
@@ -8,13 +8,13 @@ export const createOrGetUserProfile = mutation({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("Not authenticated");
+      throw new Error('Not authenticated');
     }
 
     // Check if profile already exists
     const existingProfile = await ctx.db
-      .query("userProfiles")
-      .withIndex("by_user_id", (q) => q.eq("userId", userId))
+      .query('userProfiles')
+      .withIndex('by_user_id', (q) => q.eq('userId', userId))
       .unique();
 
     if (existingProfile) {
@@ -23,7 +23,7 @@ export const createOrGetUserProfile = mutation({
 
     // Create new profile
     const now = Date.now();
-    const profileId = await ctx.db.insert("userProfiles", {
+    const profileId = await ctx.db.insert('userProfiles', {
       userId,
       createdAt: now,
       updatedAt: now,
@@ -43,8 +43,8 @@ export const getCurrentUserProfile = query({
     }
 
     return await ctx.db
-      .query("userProfiles")
-      .withIndex("by_user_id", (q) => q.eq("userId", userId))
+      .query('userProfiles')
+      .withIndex('by_user_id', (q) => q.eq('userId', userId))
       .unique();
   },
 });

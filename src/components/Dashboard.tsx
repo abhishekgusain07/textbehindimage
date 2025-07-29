@@ -1,26 +1,34 @@
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { useState } from "react";
-import { toast } from "sonner";
-import { TextBehindImageEditor } from "./TextBehindImageEditor";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { FocusCards } from "@/components/ui/focus-card";
-import { Plus } from "lucide-react";
+import { useQuery, useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { TextBehindImageEditor } from './TextBehindImageEditor';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { FocusCards } from '@/components/ui/focus-card';
+import { Plus } from 'lucide-react';
 
 export function Dashboard() {
   const userProjects = useQuery(api.projects.getUserProjects);
   const createProject = useMutation(api.projects.createProject);
   const deleteProject = useMutation(api.projects.deleteProject);
-  
+
   const [isCreating, setIsCreating] = useState(false);
-  const [newProjectTitle, setNewProjectTitle] = useState("");
+  const [newProjectTitle, setNewProjectTitle] = useState('');
   const [newProjectPublic, setNewProjectPublic] = useState(false);
   const [editingProject, setEditingProject] = useState<string | null>(null);
-  const [deletingProjects, setDeletingProjects] = useState<Set<string>>(new Set());
+  const [deletingProjects, setDeletingProjects] = useState<Set<string>>(
+    new Set()
+  );
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,31 +39,31 @@ export function Dashboard() {
         title: newProjectTitle.trim(),
         isPublic: newProjectPublic,
       });
-      
-      toast.success("Project created successfully!");
-      setNewProjectTitle("");
+
+      toast.success('Project created successfully!');
+      setNewProjectTitle('');
       setNewProjectPublic(false);
       setIsCreating(false);
       setEditingProject(projectId);
     } catch (error) {
-      toast.error("Failed to create project");
+      toast.error('Failed to create project');
       console.error(error);
     }
   };
 
   const handleDeleteProject = async (projectId: string) => {
     // Add project to deleting set for visual feedback
-    setDeletingProjects(prev => new Set(prev).add(projectId));
-    
+    setDeletingProjects((prev) => new Set(prev).add(projectId));
+
     try {
       await deleteProject({ projectId: projectId as any });
-      toast.success("Project deleted successfully!");
+      toast.success('Project deleted successfully!');
     } catch (error) {
-      toast.error("Failed to delete project");
+      toast.error('Failed to delete project');
       console.error(error);
     } finally {
       // Remove project from deleting set
-      setDeletingProjects(prev => {
+      setDeletingProjects((prev) => {
         const newSet = new Set(prev);
         newSet.delete(projectId);
         return newSet;
@@ -66,25 +74,25 @@ export function Dashboard() {
   const handleDuplicateProject = async (projectId: string) => {
     try {
       // Create a duplicate by creating a new project with the same data
-      const originalProject = userProjects?.find(p => p._id === projectId);
+      const originalProject = userProjects?.find((p) => p._id === projectId);
       if (originalProject) {
         await createProject({
           title: `${originalProject.title} (Copy)`,
           isPublic: false, // Always make copies private
         });
-        toast.success("Project duplicated successfully!");
+        toast.success('Project duplicated successfully!');
       }
     } catch (error) {
-      toast.error("Failed to duplicate project");
+      toast.error('Failed to duplicate project');
       console.error(error);
     }
   };
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+    return new Date(timestamp).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
@@ -100,8 +108,8 @@ export function Dashboard() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
       <div className="flex justify-end p-6">
-        <Button 
-          onClick={() => setIsCreating(true)} 
+        <Button
+          onClick={() => setIsCreating(true)}
           size="lg"
           className="bg-white text-black border border-gray-200 hover:bg-gray-50 shadow-lg hover:shadow-xl transition-all duration-200"
         >
@@ -143,7 +151,7 @@ export function Dashboard() {
                 variant="outline"
                 onClick={() => {
                   setIsCreating(false);
-                  setNewProjectTitle("");
+                  setNewProjectTitle('');
                   setNewProjectPublic(false);
                 }}
               >
@@ -164,12 +172,27 @@ export function Dashboard() {
         ) : userProjects.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-6 bg-gradient-to-br from-blue-50 to-purple-50">
-              <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              <svg
+                className="w-16 h-16 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
               </svg>
             </div>
-            <h3 className="text-2xl font-semibold mb-3 text-gray-900">No projects yet</h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto">Create your first text behind image project to get started with amazing visual effects</p>
+            <h3 className="text-2xl font-semibold mb-3 text-gray-900">
+              No projects yet
+            </h3>
+            <p className="text-gray-600 mb-8 max-w-md mx-auto">
+              Create your first text behind image project to get started with
+              amazing visual effects
+            </p>
             <Button
               onClick={() => setIsCreating(true)}
               size="lg"
@@ -180,7 +203,7 @@ export function Dashboard() {
             </Button>
           </div>
         ) : (
-          <FocusCards 
+          <FocusCards
             projects={userProjects}
             onEdit={setEditingProject}
             onDelete={handleDeleteProject}

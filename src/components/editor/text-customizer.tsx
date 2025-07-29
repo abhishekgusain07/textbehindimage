@@ -86,11 +86,19 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({
   ];
 
   return (
-    <AccordionItem value={`item-${textSet.id}`} className="border border-gray-200 rounded-lg mb-4 bg-white shadow-sm">
+    <AccordionItem
+      value={`item-${textSet.id}`}
+      className="border border-gray-200 rounded-lg mb-4 bg-white shadow-sm"
+    >
       <AccordionTrigger className="px-6 py-4 hover:bg-gray-50 transition-colors duration-200">
         <div className="flex items-center gap-3">
-          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: textSet.color }}></div>
-          <span className="font-medium text-gray-800 truncate max-w-[200px]">{textSet.text || 'Empty Text'}</span>
+          <div
+            className="w-3 h-3 rounded-full"
+            style={{ backgroundColor: textSet.color }}
+          ></div>
+          <span className="font-medium text-gray-800 truncate max-w-[200px]">
+            {textSet.text || 'Empty Text'}
+          </span>
         </div>
       </AccordionTrigger>
       <AccordionContent className="px-6 pb-6">
@@ -98,7 +106,7 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({
         <div className="md:hidden">
           <ScrollArea className="w-full">
             <div className="flex w-max gap-2 mb-6 p-2">
-              {controls.map(control => (
+              {controls.map((control) => (
                 <button
                   key={control.id}
                   onClick={() =>
@@ -113,7 +121,9 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({
                   }`}
                 >
                   {control.icon}
-                  <span className="text-xs mt-1.5 font-medium">{control.label}</span>
+                  <span className="text-xs mt-1.5 font-medium">
+                    {control.label}
+                  </span>
                 </button>
               ))}
             </div>
@@ -456,8 +466,8 @@ const TextCustomizer: React.FC<TextCustomizerProps> = ({
         </div>
 
         <div className="flex gap-3 mt-8 pt-6 border-t border-gray-200">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => duplicateTextSet(textSet)}
             className="flex items-center gap-2 px-4 py-2 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200"
           >

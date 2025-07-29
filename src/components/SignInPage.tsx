@@ -1,39 +1,49 @@
-import { useState } from "react";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useAuthActions } from '@convex-dev/auth/react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useNavigate } from 'react-router-dom';
 
 export function SignInPage() {
   const { signIn } = useAuthActions();
-  const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
+  const [flow, setFlow] = useState<'signIn' | 'signUp'>('signIn');
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    
+
     const formData = new FormData(e.target as HTMLFormElement);
-    formData.set("flow", flow);
-    
+    formData.set('flow', flow);
+
     try {
-      await signIn("password", formData);
-      toast.success(flow === "signIn" ? "Signed in successfully!" : "Account created successfully!");
-      navigate("/dashboard");
+      await signIn('password', formData);
+      toast.success(
+        flow === 'signIn'
+          ? 'Signed in successfully!'
+          : 'Account created successfully!'
+      );
+      navigate('/dashboard');
     } catch (error: any) {
-      let toastTitle = "";
-      if (error.message.includes("Invalid password")) {
-        toastTitle = "Invalid password. Please try again.";
+      let toastTitle = '';
+      if (error.message.includes('Invalid password')) {
+        toastTitle = 'Invalid password. Please try again.';
       } else {
         toastTitle =
-          flow === "signIn"
-            ? "Could not sign in, did you mean to sign up?"
-            : "Could not sign up, did you mean to sign in?";
+          flow === 'signIn'
+            ? 'Could not sign in, did you mean to sign up?'
+            : 'Could not sign up, did you mean to sign in?';
       }
       toast.error(toastTitle);
     } finally {
@@ -54,8 +64,13 @@ export function SignInPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
           <div className="absolute bottom-8 left-8 text-white">
-            <p className="text-sm opacity-80">Chosen by Parents, Loved by Kids</p>
-            <p className="text-xs opacity-60">Safe, educational stories that ignite with your child's imagination</p>
+            <p className="text-sm opacity-80">
+              Chosen by Parents, Loved by Kids
+            </p>
+            <p className="text-xs opacity-60">
+              Safe, educational stories that ignite with your child's
+              imagination
+            </p>
           </div>
         </div>
 
@@ -67,22 +82,30 @@ export function SignInPage() {
                 Dive Into the World of Stories
               </h1>
               <p className="text-sm text-gray-600">
-                Discover fun, interactive stories that spark your child's imagination
+                Discover fun, interactive stories that spark your child's
+                imagination
               </p>
             </div>
 
             <div className="space-y-6">
-              <Tabs value={flow} onValueChange={(value) => setFlow(value as "signIn" | "signUp")} className="w-full">
+              <Tabs
+                value={flow}
+                onValueChange={(value) => setFlow(value as 'signIn' | 'signUp')}
+                className="w-full"
+              >
                 <TabsList className="hidden">
                   <TabsTrigger value="signIn">Sign In</TabsTrigger>
                   <TabsTrigger value="signUp">Sign Up</TabsTrigger>
                 </TabsList>
-                
+
                 <TabsContent value="signIn" className="space-y-4">
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm font-medium text-black">
+                        <Label
+                          htmlFor="email"
+                          className="text-sm font-medium text-black"
+                        >
                           Email address
                         </Label>
                         <Input
@@ -96,10 +119,16 @@ export function SignInPage() {
                       </div>
                       <div className="space-y-2">
                         <div className="flex justify-between items-center">
-                          <Label htmlFor="password" className="text-sm font-medium text-black">
+                          <Label
+                            htmlFor="password"
+                            className="text-sm font-medium text-black"
+                          >
                             Password
                           </Label>
-                          <a href="#" className="text-sm text-gray-600 hover:text-amber-600">
+                          <a
+                            href="#"
+                            className="text-sm text-gray-600 hover:text-amber-600"
+                          >
                             Forgot password?
                           </a>
                         </div>
@@ -126,7 +155,10 @@ export function SignInPage() {
                           id="remember"
                           className="w-4 h-4 rounded border-gray-300 bg-white"
                         />
-                        <Label htmlFor="remember" className="text-sm text-gray-600">
+                        <Label
+                          htmlFor="remember"
+                          className="text-sm text-gray-600"
+                        >
                           Remember me
                         </Label>
                       </div>
@@ -136,7 +168,7 @@ export function SignInPage() {
                       disabled={submitting}
                       className="w-full h-12 rounded-lg font-medium bg-amber-700 hover:bg-amber-800 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      {submitting ? "Signing in..." : "Login"}
+                      {submitting ? 'Signing in...' : 'Login'}
                     </Button>
                   </form>
 
@@ -145,9 +177,7 @@ export function SignInPage() {
                       <span className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                      <span className="px-2 bg-white text-gray-600">
-                        Or
-                      </span>
+                      <span className="px-2 bg-white text-gray-600">Or</span>
                     </div>
                   </div>
 
@@ -181,12 +211,15 @@ export function SignInPage() {
                     </button>
                   </p>
                 </TabsContent>
-                
+
                 <TabsContent value="signUp" className="space-y-4">
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="signup-email" className="text-sm font-medium text-black">
+                        <Label
+                          htmlFor="signup-email"
+                          className="text-sm font-medium text-black"
+                        >
                           Email address
                         </Label>
                         <Input
@@ -199,7 +232,10 @@ export function SignInPage() {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="signup-password" className="text-sm font-medium text-black">
+                        <Label
+                          htmlFor="signup-password"
+                          className="text-sm font-medium text-black"
+                        >
                           Password
                         </Label>
                         <div className="relative">
@@ -225,7 +261,10 @@ export function SignInPage() {
                           id="signup-remember"
                           className="w-4 h-4 rounded border-gray-300 bg-white"
                         />
-                        <Label htmlFor="signup-remember" className="text-sm text-gray-600">
+                        <Label
+                          htmlFor="signup-remember"
+                          className="text-sm text-gray-600"
+                        >
                           Remember me
                         </Label>
                       </div>
@@ -235,7 +274,7 @@ export function SignInPage() {
                       disabled={submitting}
                       className="w-full h-12 rounded-lg font-medium bg-amber-700 hover:bg-amber-800 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      {submitting ? "Creating account..." : "Create Account"}
+                      {submitting ? 'Creating account...' : 'Create Account'}
                     </Button>
                   </form>
 
@@ -244,9 +283,7 @@ export function SignInPage() {
                       <span className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                      <span className="px-2 bg-white text-gray-600">
-                        Or
-                      </span>
+                      <span className="px-2 bg-white text-gray-600">Or</span>
                     </div>
                   </div>
 

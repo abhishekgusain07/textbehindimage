@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Edit, Trash2, Globe, Lock } from "lucide-react";
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Edit, Trash2, Globe, Lock } from 'lucide-react';
 
 export const ProjectCard = React.memo(
   ({
@@ -30,10 +30,10 @@ export const ProjectCard = React.memo(
     };
 
     const formatDate = (timestamp: number) => {
-      return new Date(timestamp).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short", 
-        day: "numeric",
+      return new Date(timestamp).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
       });
     };
 
@@ -43,9 +43,9 @@ export const ProjectCard = React.memo(
         onMouseLeave={() => setHovered(null)}
         onClick={() => onEdit(project._id)}
         className={cn(
-          "rounded-xl relative bg-white overflow-hidden h-80 w-full transition-all duration-300 ease-out shadow-lg hover:shadow-xl cursor-pointer",
-          hovered !== null && hovered !== index && "blur-sm scale-[0.98]",
-          isDeleting && "opacity-50 pointer-events-none"
+          'rounded-xl relative bg-white overflow-hidden h-80 w-full transition-all duration-300 ease-out shadow-lg hover:shadow-xl cursor-pointer',
+          hovered !== null && hovered !== index && 'blur-sm scale-[0.98]',
+          isDeleting && 'opacity-50 pointer-events-none'
         )}
       >
         {/* Full Image Container */}
@@ -58,27 +58,27 @@ export const ProjectCard = React.memo(
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-              <svg 
-                className="w-16 h-16 text-gray-300" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-16 h-16 text-gray-300"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={1.5} 
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
             </div>
           )}
-          
+
           {/* Project Title Overlay - Only visible on hover */}
           <div
             className={cn(
-              "absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-300",
-              hovered === index ? "opacity-100" : "opacity-0"
+              'absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-300',
+              hovered === index ? 'opacity-100' : 'opacity-0'
             )}
           >
             <h3 className="font-semibold text-white text-lg truncate">
@@ -90,8 +90,8 @@ export const ProjectCard = React.memo(
         {/* Hover Action Overlay */}
         <div
           className={cn(
-            "absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center gap-3 transition-all duration-300",
-            hovered === index ? "opacity-100" : "opacity-0 pointer-events-none"
+            'absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center gap-3 transition-all duration-300',
+            hovered === index ? 'opacity-100' : 'opacity-0 pointer-events-none'
           )}
         >
           <Button
@@ -134,7 +134,7 @@ export const ProjectCard = React.memo(
   }
 );
 
-ProjectCard.displayName = "ProjectCard";
+ProjectCard.displayName = 'ProjectCard';
 
 export type ProjectCardData = {
   _id: string;
@@ -146,12 +146,12 @@ export type ProjectCardData = {
   updatedAt: number;
 };
 
-export function FocusCards({ 
-  projects, 
-  onEdit, 
+export function FocusCards({
+  projects,
+  onEdit,
   onDelete,
-  deletingProjects 
-}: { 
+  deletingProjects,
+}: {
   projects: ProjectCardData[];
   onEdit: (projectId: string) => void;
   onDelete: (projectId: string) => void;

@@ -1,15 +1,15 @@
-import { v } from "convex/values";
-import { query, mutation } from "./_generated/server";
-import { getAuthUserId } from "@convex-dev/auth/server";
+import { v } from 'convex/values';
+import { query, mutation } from './_generated/server';
+import { getAuthUserId } from '@convex-dev/auth/server';
 
 // Get all public projects for the homepage
 export const getPublicProjects = query({
   args: {},
   handler: async (ctx) => {
     const projects = await ctx.db
-      .query("textBehindProjects")
-      .withIndex("by_public", (q) => q.eq("isPublic", true))
-      .order("desc")
+      .query('textBehindProjects')
+      .withIndex('by_public', (q) => q.eq('isPublic', true))
+      .order('desc')
       .take(20);
 
     return Promise.all(
@@ -32,13 +32,13 @@ export const getUserProjects = query({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("Not authenticated");
+      throw new Error('Not authenticated');
     }
 
     const projects = await ctx.db
-      .query("textBehindProjects")
-      .withIndex("by_user_created", (q) => q.eq("userId", userId))
-      .order("desc")
+      .query('textBehindProjects')
+      .withIndex('by_user_created', (q) => q.eq('userId', userId))
+      .order('desc')
       .collect();
 
     return Promise.all(
@@ -57,7 +57,7 @@ export const getUserProjects = query({
 
 // Get a single project by ID
 export const getProject = query({
-  args: { projectId: v.id("textBehindProjects") },
+  args: { projectId: v.id('textBehindProjects') },
   handler: async (ctx, args) => {
     const project = await ctx.db.get(args.projectId);
     if (!project) {
@@ -67,7 +67,7 @@ export const getProject = query({
     // Check if user can access this project
     const userId = await getAuthUserId(ctx);
     if (!project.isPublic && project.userId !== userId) {
-      throw new Error("Not authorized to view this project");
+      throw new Error('Not authorized to view this project');
     }
 
     return {
@@ -91,11 +91,11 @@ export const createProject = mutation({
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("Not authenticated");
+      throw new Error('Not authenticated');
     }
 
     const now = Date.now();
-    return await ctx.db.insert("textBehindProjects", {
+    return await ctx.db.insert('textBehindProjects', {
       userId,
       title: args.title,
       textLayers: [],
@@ -109,18 +109,18 @@ export const createProject = mutation({
 // Update project with image
 export const updateProjectImage = mutation({
   args: {
-    projectId: v.id("textBehindProjects"),
-    originalImageStorageId: v.id("_storage"),
+    projectId: v.id('textBehindProjects'),
+    originalImageStorageId: v.id('_storage'),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("Not authenticated");
+      throw new Error('Not authenticated');
     }
 
     const project = await ctx.db.get(args.projectId);
     if (!project || project.userId !== userId) {
-      throw new Error("Project not found or not authorized");
+      throw new Error('Project not found or not authorized');
     }
 
     await ctx.db.patch(args.projectId, {
@@ -133,34 +133,36 @@ export const updateProjectImage = mutation({
 // Update project text layers
 export const updateProjectTextLayers = mutation({
   args: {
-    projectId: v.id("textBehindProjects"),
-    textLayers: v.array(v.object({
-      id: v.number(),
-      text: v.string(),
-      fontFamily: v.string(),
-      top: v.number(),
-      left: v.number(),
-      color: v.string(),
-      fontSize: v.number(),
-      fontWeight: v.number(),
-      opacity: v.number(),
-      shadowColor: v.string(),
-      shadowSize: v.number(),
-      rotation: v.number(),
-      tiltX: v.number(),
-      tiltY: v.number(),
-      letterSpacing: v.number(),
-    })),
+    projectId: v.id('textBehindProjects'),
+    textLayers: v.array(
+      v.object({
+        id: v.number(),
+        text: v.string(),
+        fontFamily: v.string(),
+        top: v.number(),
+        left: v.number(),
+        color: v.string(),
+        fontSize: v.number(),
+        fontWeight: v.number(),
+        opacity: v.number(),
+        shadowColor: v.string(),
+        shadowSize: v.number(),
+        rotation: v.number(),
+        tiltX: v.number(),
+        tiltY: v.number(),
+        letterSpacing: v.number(),
+      })
+    ),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("Not authenticated");
+      throw new Error('Not authenticated');
     }
 
     const project = await ctx.db.get(args.projectId);
     if (!project || project.userId !== userId) {
-      throw new Error("Project not found or not authorized");
+      throw new Error('Project not found or not authorized');
     }
 
     await ctx.db.patch(args.projectId, {
@@ -173,18 +175,18 @@ export const updateProjectTextLayers = mutation({
 // Save processed image
 export const saveProcessedImage = mutation({
   args: {
-    projectId: v.id("textBehindProjects"),
-    processedImageStorageId: v.id("_storage"),
+    projectId: v.id('textBehindProjects'),
+    processedImageStorageId: v.id('_storage'),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("Not authenticated");
+      throw new Error('Not authenticated');
     }
 
     const project = await ctx.db.get(args.projectId);
     if (!project || project.userId !== userId) {
-      throw new Error("Project not found or not authorized");
+      throw new Error('Project not found or not authorized');
     }
 
     await ctx.db.patch(args.projectId, {
@@ -200,7 +202,7 @@ export const generateUploadUrl = mutation({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("Not authenticated");
+      throw new Error('Not authenticated');
     }
     return await ctx.storage.generateUploadUrl();
   },
@@ -208,16 +210,16 @@ export const generateUploadUrl = mutation({
 
 // Delete project
 export const deleteProject = mutation({
-  args: { projectId: v.id("textBehindProjects") },
+  args: { projectId: v.id('textBehindProjects') },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
-      throw new Error("Not authenticated");
+      throw new Error('Not authenticated');
     }
 
     const project = await ctx.db.get(args.projectId);
     if (!project || project.userId !== userId) {
-      throw new Error("Project not found or not authorized");
+      throw new Error('Project not found or not authorized');
     }
 
     await ctx.db.delete(args.projectId);

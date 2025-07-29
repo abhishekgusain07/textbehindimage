@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -9,11 +9,11 @@ export default defineConfig(({ mode }) => ({
     // The code below enables dev tools like taking screenshots of your site
     // while it is being developed on chef.convex.dev.
     // Feel free to remove this code if you're no longer developing your app with Chef.
-    mode === "development"
+    mode === 'development'
       ? {
-          name: "inject-chef-dev",
+          name: 'inject-chef-dev',
           transform(code: string, id: string) {
-            if (id.includes("main.tsx")) {
+            if (id.includes('main.tsx')) {
               return {
                 code: `${code}
 
@@ -37,7 +37,7 @@ window.addEventListener('message', async (message) => {
   ].filter(Boolean),
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   build: {
@@ -45,7 +45,11 @@ window.addEventListener('message', async (message) => {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+            if (
+              id.includes('react') ||
+              id.includes('react-dom') ||
+              id.includes('react-router')
+            ) {
               return 'vendor';
             }
             if (id.includes('@radix-ui')) {

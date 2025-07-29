@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export function HomePage() {
       <section className="w-full py-7 md:py-15">
         <div className="container mx-auto px-4 text-center sm:px-6">
           <h1 className="text-4xl font-bold leading-tight tracking-tighter sm:text-5xl md:text-6xl md:leading-tight">
-            Auto Insert{" "}
+            Auto Insert{' '}
             <span className="relative inline-block text-blue-400">
               text between
               <svg
@@ -26,7 +26,7 @@ export function HomePage() {
                   strokeLinejoin="round"
                 ></path>
               </svg>
-            </span>{" "}
+            </span>{' '}
             your images
           </h1>
           <p className="mx-auto pl-4 pr-4 md:p-0 mt-4 max-w-lg md:max-w-xl text-xs text-slate-600 md:text-lg">
@@ -37,7 +37,7 @@ export function HomePage() {
             <button
               data-slot="button"
               className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20  aria-invalid:border-destructive shadow-xs h-9 px-4 py-2 has-[>svg]:px-3 bg-black text-white hover:bg-slate-800 sm:w-auto"
-              onClick={() => navigate("/sign-in")}
+              onClick={() => navigate('/sign-in')}
             >
               Try Now
             </button>
@@ -55,7 +55,10 @@ export function HomePage() {
         <div className="w-full items-start overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start max-w-5xl mx-auto gap-10 py-10 px-2">
             <div className="grid gap-10">
-              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+              <div
+                className="cursor-pointer"
+                style={{ transform: 'translateY(-50px)' }}
+              >
                 <img
                   alt="thumbnail"
                   loading="lazy"
@@ -64,11 +67,14 @@ export function HomePage() {
                   decoding="async"
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
-                  style={{ color: "transparent" }}
+                  style={{ color: 'transparent' }}
                   src="/compare-images/a.jpg"
                 />
               </div>
-              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+              <div
+                className="cursor-pointer"
+                style={{ transform: 'translateY(-50px)' }}
+              >
                 <img
                   alt="thumbnail"
                   loading="lazy"
@@ -77,11 +83,14 @@ export function HomePage() {
                   decoding="async"
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
-                  style={{ color: "transparent" }}
+                  style={{ color: 'transparent' }}
                   src="/compare-images/b.jpg"
                 />
               </div>
-              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+              <div
+                className="cursor-pointer"
+                style={{ transform: 'translateY(-50px)' }}
+              >
                 <img
                   alt="thumbnail"
                   loading="lazy"
@@ -90,13 +99,16 @@ export function HomePage() {
                   decoding="async"
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
-                  style={{ color: "transparent" }}
+                  style={{ color: 'transparent' }}
                   src="/compare-images/c.jpg"
                 />
               </div>
             </div>
             <div className="grid gap-10">
-              <div className="cursor-pointer" style={{ transform: "translateY(50px)" }}>
+              <div
+                className="cursor-pointer"
+                style={{ transform: 'translateY(50px)' }}
+              >
                 <img
                   alt="thumbnail"
                   loading="lazy"
@@ -105,11 +117,14 @@ export function HomePage() {
                   decoding="async"
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
-                  style={{ color: "transparent" }}
+                  style={{ color: 'transparent' }}
                   src="/compare-images/d.png"
                 />
               </div>
-              <div className="cursor-pointer" style={{ transform: "translateY(50px)" }}>
+              <div
+                className="cursor-pointer"
+                style={{ transform: 'translateY(50px)' }}
+              >
                 <img
                   alt="thumbnail"
                   loading="lazy"
@@ -118,11 +133,14 @@ export function HomePage() {
                   decoding="async"
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
-                  style={{ color: "transparent" }}
+                  style={{ color: 'transparent' }}
                   src="/compare-images/e.jpg"
                 />
               </div>
-              <div className="cursor-pointer" style={{ transform: "translateY(50px)" }}>
+              <div
+                className="cursor-pointer"
+                style={{ transform: 'translateY(50px)' }}
+              >
                 <img
                   alt="thumbnail"
                   loading="lazy"
@@ -131,13 +149,16 @@ export function HomePage() {
                   decoding="async"
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
-                  style={{ color: "transparent" }}
+                  style={{ color: 'transparent' }}
                   src="/compare-images/f.jpg"
                 />
               </div>
             </div>
             <div className="grid gap-10">
-              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+              <div
+                className="cursor-pointer"
+                style={{ transform: 'translateY(-50px)' }}
+              >
                 <img
                   alt="thumbnail"
                   loading="lazy"
@@ -146,11 +167,14 @@ export function HomePage() {
                   decoding="async"
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
-                  style={{ color: "transparent" }}
+                  style={{ color: 'transparent' }}
                   src="/compare-images/g.png"
                 />
               </div>
-              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+              <div
+                className="cursor-pointer"
+                style={{ transform: 'translateY(-50px)' }}
+              >
                 <img
                   alt="thumbnail"
                   loading="lazy"
@@ -159,11 +183,14 @@ export function HomePage() {
                   decoding="async"
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
-                  style={{ color: "transparent" }}
+                  style={{ color: 'transparent' }}
                   src="/compare-images/h.png"
                 />
               </div>
-              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+              <div
+                className="cursor-pointer"
+                style={{ transform: 'translateY(-50px)' }}
+              >
                 <img
                   alt="thumbnail"
                   loading="lazy"
@@ -172,7 +199,7 @@ export function HomePage() {
                   decoding="async"
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
-                  style={{ color: "transparent" }}
+                  style={{ color: 'transparent' }}
                   src="/compare-images/i.png"
                 />
               </div>

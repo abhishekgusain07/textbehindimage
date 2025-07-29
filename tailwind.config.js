@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -19,11 +16,11 @@ export default {
         'text-secondary': 'var(--text-secondary)',
       },
       spacing: {
-        'section': '2rem',
-        'container': '0.5rem',
+        section: '2rem',
+        container: '0.5rem',
       },
       borderRadius: {
-        'container': '0.5rem',
+        container: '0.5rem',
       },
       boxShadow: {
         'theme-sm': 'var(--shadow-sm)',
@@ -34,4 +31,4 @@ export default {
     },
   },
   plugins: [],
-}
+};

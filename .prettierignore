@@ -1,0 +1,13 @@
+node_modules
+dist
+build
+.next
+.nuxt
+coverage
+*.min.js
+*.min.css
+public
+.git
+.DS_Store
+*.log
+.env*

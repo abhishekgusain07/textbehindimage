@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Navbar,
   NavBody,
@@ -9,13 +9,13 @@ import {
   MobileNavHeader,
   MobileNavToggle,
   MobileNavMenu,
-} from "@/components/ui/resizable-navbar";
-import { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUser } from "@/hooks/useUser";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { toast } from "sonner";
-import { Button } from "./button";
+} from '@/components/ui/resizable-navbar';
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '@/hooks/useUser';
+import { useAuthActions } from '@convex-dev/auth/react';
+import { toast } from 'sonner';
+import { Button } from './button';
 
 export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useUser();
@@ -28,16 +28,16 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     {
-      name: "Features",
-      link: "/#features",
+      name: 'Features',
+      link: '/#features',
     },
     {
-      name: "Examples",
-      link: "/dashboard",
+      name: 'Examples',
+      link: '/dashboard',
     },
     {
-      name: "About",
-      link: "/#about",
+      name: 'About',
+      link: '/#about',
     },
   ];
 
@@ -54,15 +54,15 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
   // Get user initial for avatar
   const getUserInitial = () => {
-    if (!user || !user.email) return "?";
+    if (!user || !user.email) return '?';
     return user.email.charAt(0).toUpperCase();
   };
 
@@ -70,11 +70,11 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
     try {
       setIsLoggingOut(true);
       await signOut();
-      toast.success("Logged out successfully");
-      navigate("/");
+      toast.success('Logged out successfully');
+      navigate('/');
     } catch (error) {
-      toast.error("Failed to log out. Please try again.");
-      console.error("Logout error:", error);
+      toast.error('Failed to log out. Please try again.');
+      console.error('Logout error:', error);
     } finally {
       setIsLoggingOut(false);
       setIsDropdownOpen(false);
@@ -82,9 +82,8 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
   };
 
   const handleLogin = () => {
-    navigate("/sign-in");
+    navigate('/sign-in');
   };
-
 
   // Render avatar skeleton during loading
   const renderAuthUI = () => {
@@ -110,7 +109,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
               <div className="absolute right-0 mt-2 w-48 rounded-md z-50 bg-white shadow-lg border border-gray-200">
                 <div className="py-1">
                   <button
-                    onClick={() => navigate("/dashboard")}
+                    onClick={() => navigate('/dashboard')}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 hover:cursor-pointer transition-colors"
                   >
                     Dashboard
@@ -119,8 +118,8 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
                     onClick={handleLogout}
                     disabled={isLoggingOut}
                     className={`block w-full text-left px-4 py-2 text-sm hover:cursor-pointer relative transition-colors ${
-                      isLoggingOut 
-                        ? 'text-gray-400 bg-gray-50' 
+                      isLoggingOut
+                        ? 'text-gray-400 bg-gray-50'
                         : 'text-red-600 hover:bg-gray-100'
                     }`}
                   >
@@ -130,7 +129,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
                         <span className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 border-2 border-t-transparent border-red-400 rounded-full animate-spin"></span>
                       </>
                     ) : (
-                      "Log out"
+                      'Log out'
                     )}
                   </button>
                 </div>
@@ -163,7 +162,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
         <>
           <NavbarButton
             onClick={() => {
-              navigate("/dashboard");
+              navigate('/dashboard');
               setIsMobileMenuOpen(false);
             }}
             variant="primary"
@@ -178,7 +177,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
             }}
             disabled={isLoggingOut}
             variant="secondary"
-            className={`w-full relative ${isLoggingOut ? "opacity-70" : ""}`}
+            className={`w-full relative ${isLoggingOut ? 'opacity-70' : ''}`}
           >
             {isLoggingOut ? (
               <>
@@ -186,7 +185,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
                 <span className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 border-2 border-t-transparent border-current rounded-full animate-spin"></span>
               </>
             ) : (
-              "Log out"
+              'Log out'
             )}
           </NavbarButton>
         </>
@@ -197,7 +196,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
       <>
         <NavbarButton
           onClick={() => {
-            navigate("/sign-in");
+            navigate('/sign-in');
             setIsMobileMenuOpen(false);
           }}
           variant="primary"

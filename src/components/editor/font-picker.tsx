@@ -29,7 +29,7 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
   attribute,
   currentFont,
   handleAttributeChange,
-  userId
+  userId,
 }) => {
   return (
     <Popover>
@@ -56,11 +56,11 @@ const FontFamilyPicker: React.FC<FontFamilyPickerProps> = ({
           <CommandList>
             <CommandEmpty>No font found.</CommandEmpty>
             <CommandGroup>
-              {ALL_FONTS.map(font => (
+              {ALL_FONTS.map((font) => (
                 <CommandItem
                   key={font}
                   value={font}
-                  onSelect={value => {
+                  onSelect={(value) => {
                     handleAttributeChange(attribute, value);
                   }}
                 >
