@@ -113,9 +113,21 @@ body {
     "Segoe UI Emoji",
     "Segoe UI Symbol",
     "Noto Color Emoji";
-  color: var(--text-primary);
-  background: var(--bg-primary);
+  color: var(--text-primary, #1f2937);
+  background: var(--bg-primary, #ffffff);
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* Ensure theme variables are applied immediately */
+html[data-theme="dark"] {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html[data-theme="light"] {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 /* only use this to update the style of the auth input fields. use a different class for all other input fields */

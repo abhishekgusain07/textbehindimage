@@ -17,6 +17,7 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import { toast } from "sonner";
 import { Sun, Moon } from "lucide-react";
+import { Button } from "./button";
 
 export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useUser();
@@ -87,22 +88,39 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
     navigate("/sign-in");
   };
 
-  // Theme toggle button component
-  const ThemeToggle = ({ className = "" }: { className?: string }) => (
-    <button
-      onClick={toggleTheme}
-      className={`p-2 rounded-lg transition-colors ${className}`}
-      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-accent)'}
-      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-    >
-      {theme === 'light' ? (
-        <Moon className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} />
-      ) : (
-        <Sun className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
-      )}
-    </button>
-  );
+  // Working theme toggle component
+  const ThemeToggle = ({ className = "" }: { className?: string }) => {
+    return (
+      <Button
+        onClick={() => {
+          const newTheme = theme === 'light' ? 'dark' : 'light';
+          
+          // Direct DOM manipulation for immediate effect
+          document.documentElement.setAttribute('data-theme', newTheme);
+          document.body.style.background = newTheme === 'dark' ? '#0f172a' : '#ffffff';
+          document.body.style.color = newTheme === 'dark' ? '#f1f5f9' : '#1f2937';
+          localStorage.setItem('theme', newTheme);
+          
+          toggleTheme();
+        }}
+        className={`p-2 rounded-lg border transition-colors hover:bg-gray-100 z-50 dark:hover:bg-gray-700 ${className}`}
+        style={{
+          background: theme === 'light' ? '#ffffff' : '#1f2937',
+          color: theme === 'light' ? '#1f2937' : '#f1f5f9',
+          borderColor: theme === 'light' ? '#e5e7eb' : '#374151',
+          minWidth: '40px',
+          minHeight: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer'
+        }}
+        title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      >
+        {theme === 'light' ? '🌙' : '☀️'}
+      </Button>
+    );
+  };
 
   // Render avatar skeleton during loading
   const renderAuthUI = () => {
