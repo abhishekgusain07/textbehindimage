@@ -11,3 +11,4 @@ public
 .DS_Store
 *.log
 .env*
+convex/_generated
