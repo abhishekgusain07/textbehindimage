@@ -1,126 +1,156 @@
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Authenticated, Unauthenticated } from "convex/react";
-import { SignInForm } from "../SignInForm";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, Sparkles, Image, Type, Palette } from "lucide-react";
 
 export function HomePage() {
   const publicProjects = useQuery(api.projects.getPublicProjects);
+  const navigate = useNavigate();
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          Create Stunning Text Behind Image Effects
-        </h1>
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          Upload your images and add beautiful text layers that appear behind objects. 
-          Create professional-looking designs with our intuitive editor.
-        </p>
-        
-        <Unauthenticated>
-          <div className="max-w-md mx-auto">
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-2xl font-semibold mb-4">Get Started</h2>
-              <p className="text-gray-600 mb-6">Sign in to start creating your own text behind image projects</p>
-              <SignInForm />
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 py-20">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="flex items-center justify-center mb-6">
+              <Sparkles className="w-8 h-8 text-blue-600 mr-2" />
+              <span className="text-blue-600 font-semibold">AI-Powered Design Tool</span>
             </div>
-          </div>
-        </Unauthenticated>
-
-        <Authenticated>
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto">
-            <h2 className="text-2xl font-semibold mb-4">Welcome Back!</h2>
-            <p className="text-gray-600 mb-6">Ready to create amazing text behind image effects?</p>
-            <button className="w-full px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition-colors">
-              Go to Dashboard
-            </button>
-          </div>
-        </Authenticated>
-      </div>
-
-      {/* Public Projects Gallery */}
-      <div className="mb-12">
-        <h2 className="text-3xl font-bold text-center mb-8">Featured Projects</h2>
-        {publicProjects === undefined ? (
-          <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          </div>
-        ) : publicProjects.length === 0 ? (
-          <div className="text-center text-gray-500">
-            <p>No public projects yet. Be the first to create and share one!</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {publicProjects.map((project) => (
-              <div key={project._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="aspect-video bg-gray-200 relative">
-                  {project.processedImageUrl ? (
-                    <img
-                      src={project.processedImageUrl}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : project.originalImageUrl ? (
-                    <img
-                      src={project.originalImageUrl}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      No Image
-                    </div>
-                  )}
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-lg mb-2">{project.title}</h3>
-                  <p className="text-sm text-gray-500">
-                    {project.textLayers.length} text layer{project.textLayers.length !== 1 ? 's' : ''}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-2">
-                    Created {new Date(project.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Features Section */}
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-8">Features</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
+            
+            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+              Create Stunning
+              <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Text Behind Image
+              </span>
+              Effects
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Transform your images with beautiful text layers that appear behind objects. 
+              Create professional designs with our intuitive AI-powered editor.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button 
+                size="lg" 
+                className="text-lg px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                onClick={() => navigate("/sign-in")}
+              >
+                Get Started Free
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="text-lg px-8 py-4"
+                onClick={() => navigate("/dashboard")}
+              >
+                View Examples
+              </Button>
             </div>
-            <h3 className="text-xl font-semibold mb-2">Easy Upload</h3>
-            <p className="text-gray-600">Simply drag and drop your images to get started</p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Rich Text Editor</h3>
-            <p className="text-gray-600">Customize fonts, colors, shadows, and positioning</p>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Share & Export</h3>
-            <p className="text-gray-600">Share your creations publicly or keep them private</p>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Everything you need to create amazing designs
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Our powerful tools make it easy to create professional text behind image effects
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <Card className="text-center p-8 border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Image className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Smart Background Removal</h3>
+              <p className="text-gray-600">
+                Automatically remove backgrounds from your images with AI-powered technology
+              </p>
+            </Card>
+            
+            <Card className="text-center p-8 border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Type className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Advanced Text Tools</h3>
+              <p className="text-gray-600">
+                Customize fonts, colors, and effects to create the perfect text placement
+              </p>
+            </Card>
+            
+            <Card className="text-center p-8 border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Palette className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Professional Results</h3>
+              <p className="text-gray-600">
+                Export high-quality images perfect for social media, marketing, and more
+              </p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold text-white mb-6">
+            Ready to create your first design?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Join thousands of creators who are already using our platform to create amazing designs
+          </p>
+          <Button 
+            size="lg" 
+            variant="secondary"
+            className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-gray-100"
+            onClick={() => navigate("/sign-in")}
+          >
+            Start Creating Now
+            <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
+        </div>
+      </section>
+
+      {/* Public Projects Gallery */}
+      {publicProjects && publicProjects.length > 0 && (
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+              Community Creations
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {publicProjects.slice(0, 6).map((project) => (
+                <Card key={project._id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <CardContent className="p-0">
+                    <div className="aspect-video bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500">Project Preview</span>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-semibold text-gray-900 mb-2">{project.title}</h3>
+                      <p className="text-sm text-gray-600">
+                        Created {new Date(project._creationTime).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
