@@ -1,164 +1,185 @@
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { Authenticated, Unauthenticated } from "convex/react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sparkles, Image, Type, Palette } from "lucide-react";
 
 export function HomePage() {
-  const publicProjects = useQuery(api.projects.getPublicProjects);
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-20" style={{ background: `linear-gradient(to bottom right, var(--bg-hero-gradient-from), var(--bg-hero-gradient-via), var(--bg-hero-gradient-to))` }}>
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="flex items-center justify-center mb-6">
-              <Sparkles className="w-8 h-8 mr-2" style={{ color: 'var(--text-blue)' }} />
-              <span className="font-semibold" style={{ color: 'var(--text-blue)' }}>AI-Powered Design Tool</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight" style={{ color: 'var(--text-primary)' }}>
-              Create Stunning
-              <span className="block bg-gradient-to-r bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(to right, var(--text-blue), var(--text-purple))` }}>
-                Text Behind Image
-              </span>
-              Effects
-            </h1>
-            
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-              Transform your images with beautiful text layers that appear behind objects. 
-              Create professional designs with our intuitive AI-powered editor.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button 
-                size="lg" 
-                className="text-lg px-8 py-4"
-                style={{ 
-                  background: `linear-gradient(to right, var(--bg-cta-gradient-from), var(--bg-cta-gradient-to))`,
-                  color: 'var(--text-white)'
-                }}
-                onClick={() => navigate("/sign-in")}
+    <main className="flex flex-1 flex-col items-start mt-3 md:mt-1 justify-center">
+      <section className="w-full py-7 md:py-15">
+        <div className="container mx-auto px-4 text-center sm:px-6">
+          <h1 className="text-4xl font-bold leading-tight tracking-tighter sm:text-5xl md:text-6xl md:leading-tight">
+            Auto Insert{" "}
+            <span className="relative inline-block text-blue-400">
+              text between
+              <svg
+                className="absolute -bottom-1.5 left-0 w-full md:-bottom-2"
+                height="8"
+                viewBox="0 0 230 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                Get Started Free
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="text-lg px-8 py-4"
-                onClick={() => navigate("/dashboard")}
-              >
-                View Examples
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20" style={{ background: 'var(--bg-secondary)' }}>
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
-              Everything you need to create amazing designs
-            </h2>
-            <p className="text-xl max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
-              Our powerful tools make it easy to create professional text behind image effects
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <Card className="text-center p-8 border-0 transition-shadow" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-lg)' }}>
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--bg-gradient-from)' }}>
-                <Image className="w-8 h-8" style={{ color: 'var(--text-blue)' }} />
-              </div>
-              <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Smart Background Removal</h3>
-              <p style={{ color: 'var(--text-secondary)' }}>
-                Automatically remove backgrounds from your images with AI-powered technology
-              </p>
-            </Card>
-            
-            <Card className="text-center p-8 border-0 transition-shadow" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-lg)' }}>
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--bg-gradient-to)' }}>
-                <Type className="w-8 h-8" style={{ color: 'var(--text-purple)' }} />
-              </div>
-              <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Advanced Text Tools</h3>
-              <p style={{ color: 'var(--text-secondary)' }}>
-                Customize fonts, colors, and effects to create the perfect text placement
-              </p>
-            </Card>
-            
-            <Card className="text-center p-8 border-0 transition-shadow" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-lg)' }}>
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--bg-tertiary)' }}>
-                <Palette className="w-8 h-8" style={{ color: 'var(--text-green)' }} />
-              </div>
-              <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Professional Results</h3>
-              <p style={{ color: 'var(--text-secondary)' }}>
-                Export high-quality images perfect for social media, marketing, and more
-              </p>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20" style={{ background: `linear-gradient(to right, var(--bg-cta-gradient-from), var(--bg-cta-gradient-to))` }}>
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6" style={{ color: 'var(--text-white)' }}>
-            Ready to create your first design?
-          </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-            Join thousands of creators who are already using our platform to create amazing designs
+                <path
+                  d="M1.39832 6.75C29.8394 2.03125 119.95 -2.34375 228.602 5.25"
+                  stroke="black"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </svg>
+            </span>{" "}
+            your images
+          </h1>
+          <p className="mx-auto pl-4 pr-4 md:p-0 mt-4 max-w-lg md:max-w-xl text-xs text-slate-600 md:text-lg">
+            Create pov-style Youtube thumbnails and other social media posts
+            that actually go viral.
           </p>
-          <Button 
-            size="lg" 
-            variant="secondary"
-            className="text-lg px-8 py-4 transition-colors"
-            style={{ 
-              background: 'var(--bg-card)',
-              color: 'var(--text-blue)'
-            }}
-            onClick={() => navigate("/sign-in")}
-          >
-            Start Creating Now
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
+          <div className="mt-8 flex flex-row items-center justify-center gap-4 sm:flex-row sm:gap-6">
+            <button
+              data-slot="button"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive shadow-xs h-9 px-4 py-2 has-[>svg]:px-3 bg-black text-white hover:bg-slate-800 sm:w-auto"
+              onClick={() => navigate("/sign-in")}
+            >
+              Try Now
+            </button>
+            <a
+              data-slot="button"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3"
+              href="https://youtu.be/iedOUP4Kl0U"
+            >
+              Demo
+            </a>
+          </div>
         </div>
       </section>
-
-      {/* Public Projects Gallery */}
-      {publicProjects && publicProjects.length > 0 && (
-        <section className="py-20" style={{ background: 'var(--bg-tertiary)' }}>
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: 'var(--text-primary)' }}>
-              Community Creations
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {publicProjects.slice(0, 6).map((project) => (
-                <Card key={project._id} className="overflow-hidden transition-shadow" style={{ background: 'var(--bg-card)', boxShadow: 'var(--shadow-md)' }}>
-                  <CardContent className="p-0">
-                    <div className="aspect-video flex items-center justify-center" style={{ background: 'var(--bg-accent)' }}>
-                      <span style={{ color: 'var(--text-tertiary)' }}>Project Preview</span>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>{project.title}</h3>
-                      <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                        Created {new Date(project._creationTime).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+      <section className="mb-6 mx-auto">
+        <div className="w-full items-start overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start max-w-5xl mx-auto gap-10 py-10 px-2">
+            <div className="grid gap-10">
+              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+                <img
+                  alt="thumbnail"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  decoding="async"
+                  data-nimg="1"
+                  className="h-auto w-full object-cover rounded-lg"
+                  style={{ color: "transparent" }}
+                  src="/public/compare-images/a.jpg"
+                />
+              </div>
+              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+                <img
+                  alt="thumbnail"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  decoding="async"
+                  data-nimg="1"
+                  className="h-auto w-full object-cover rounded-lg"
+                  style={{ color: "transparent" }}
+                  src="/public/compare-images/b.jpg"
+                />
+              </div>
+              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+                <img
+                  alt="thumbnail"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  decoding="async"
+                  data-nimg="1"
+                  className="h-auto w-full object-cover rounded-lg"
+                  style={{ color: "transparent" }}
+                  src="/public/compare-images/c.jpg"
+                />
+              </div>
+            </div>
+            <div className="grid gap-10">
+              <div className="cursor-pointer" style={{ transform: "translateY(50px)" }}>
+                <img
+                  alt="thumbnail"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  decoding="async"
+                  data-nimg="1"
+                  className="h-auto w-full object-cover rounded-lg"
+                  style={{ color: "transparent" }}
+                  src="/public/compare-images/d.png"
+                />
+              </div>
+              <div className="cursor-pointer" style={{ transform: "translateY(50px)" }}>
+                <img
+                  alt="thumbnail"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  decoding="async"
+                  data-nimg="1"
+                  className="h-auto w-full object-cover rounded-lg"
+                  style={{ color: "transparent" }}
+                  src="/public/compare-images/e.jpg"
+                />
+              </div>
+              <div className="cursor-pointer" style={{ transform: "translateY(50px)" }}>
+                <img
+                  alt="thumbnail"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  decoding="async"
+                  data-nimg="1"
+                  className="h-auto w-full object-cover rounded-lg"
+                  style={{ color: "transparent" }}
+                  src="/public/compare-images/f.jpg"
+                />
+              </div>
+            </div>
+            <div className="grid gap-10">
+              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+                <img
+                  alt="thumbnail"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  decoding="async"
+                  data-nimg="1"
+                  className="h-auto w-full object-cover rounded-lg"
+                  style={{ color: "transparent" }}
+                  src="/public/compare-images/g.png"
+                />
+              </div>
+              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+                <img
+                  alt="thumbnail"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  decoding="async"
+                  data-nimg="1"
+                  className="h-auto w-full object-cover rounded-lg"
+                  style={{ color: "transparent" }}
+                  src="/public/compare-images/h.png"
+                />
+              </div>
+              <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
+                <img
+                  alt="thumbnail"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  decoding="async"
+                  data-nimg="1"
+                  className="h-auto w-full object-cover rounded-lg"
+                  style={{ color: "transparent" }}
+                  src="/public/compare-images/i.png"
+                />
+              </div>
             </div>
           </div>
-        </section>
-      )}
-    </div>
+        </div>
+      </section>
+    </main>
   );
 }
