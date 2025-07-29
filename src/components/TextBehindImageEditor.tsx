@@ -16,7 +16,6 @@ import CompareSlider from './compare-slider';
 
 import { PlusIcon } from 'lucide-react';
 
-import { removeBackground } from "@imgly/background-removal";
 
 interface TextBehindImageEditorProps {
   projectId: string;
@@ -92,6 +91,7 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
     const setupImage = async (imageUrl: string) => {
         try {
             setProcessingMessage('Removing background... This may take 10-30 seconds for high quality results');
+            const { removeBackground } = await import("@imgly/background-removal");
             const imageBlob = await removeBackground(imageUrl);
             const url = URL.createObjectURL(imageBlob);
             setRemovedBgImageUrl(url);
