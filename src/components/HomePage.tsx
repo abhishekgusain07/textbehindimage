@@ -65,7 +65,7 @@ export function HomePage() {
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
                   style={{ color: "transparent" }}
-                  src="/public/compare-images/a.jpg"
+                  src="/compare-images/a.jpg"
                 />
               </div>
               <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
@@ -78,7 +78,7 @@ export function HomePage() {
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
                   style={{ color: "transparent" }}
-                  src="/public/compare-images/b.jpg"
+                  src="/compare-images/b.jpg"
                 />
               </div>
               <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
@@ -91,7 +91,7 @@ export function HomePage() {
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
                   style={{ color: "transparent" }}
-                  src="/public/compare-images/c.jpg"
+                  src="/compare-images/c.jpg"
                 />
               </div>
             </div>
@@ -106,7 +106,7 @@ export function HomePage() {
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
                   style={{ color: "transparent" }}
-                  src="/public/compare-images/d.png"
+                  src="/compare-images/d.png"
                 />
               </div>
               <div className="cursor-pointer" style={{ transform: "translateY(50px)" }}>
@@ -119,7 +119,7 @@ export function HomePage() {
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
                   style={{ color: "transparent" }}
-                  src="/public/compare-images/e.jpg"
+                  src="/compare-images/e.jpg"
                 />
               </div>
               <div className="cursor-pointer" style={{ transform: "translateY(50px)" }}>
@@ -132,7 +132,7 @@ export function HomePage() {
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
                   style={{ color: "transparent" }}
-                  src="/public/compare-images/f.jpg"
+                  src="/compare-images/f.jpg"
                 />
               </div>
             </div>
@@ -147,7 +147,7 @@ export function HomePage() {
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
                   style={{ color: "transparent" }}
-                  src="/public/compare-images/g.png"
+                  src="/compare-images/g.png"
                 />
               </div>
               <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
@@ -160,7 +160,7 @@ export function HomePage() {
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
                   style={{ color: "transparent" }}
-                  src="/public/compare-images/h.png"
+                  src="/compare-images/h.png"
                 />
               </div>
               <div className="cursor-pointer" style={{ transform: "translateY(-50px)" }}>
@@ -173,7 +173,7 @@ export function HomePage() {
                   data-nimg="1"
                   className="h-auto w-full object-cover rounded-lg"
                   style={{ color: "transparent" }}
-                  src="/public/compare-images/i.png"
+                  src="/compare-images/i.png"
                 />
               </div>
             </div>
