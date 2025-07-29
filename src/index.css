@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light theme variables */
+/* Light theme variables only */
 :root {
   /* Backgrounds */
   --bg-primary: #ffffff;
@@ -47,51 +47,6 @@
   --btn-secondary-hover: #4b5563;
 }
 
-/* Dark theme variables */
-:root[data-theme="dark"] {
-  /* Backgrounds */
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --bg-accent: #475569;
-  --bg-card: #1e293b;
-  --bg-gradient-from: #1e293b;
-  --bg-gradient-to: #3730a3;
-  --bg-hero-gradient-from: #1e1b4b;
-  --bg-hero-gradient-via: #1e293b;
-  --bg-hero-gradient-to: #312e81;
-  --bg-cta-gradient-from: #3b82f6;
-  --bg-cta-gradient-to: #8b5cf6;
-  
-  /* Text colors */
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #94a3b8;
-  --text-accent: #e2e8f0;
-  --text-white: #ffffff;
-  --text-blue: #60a5fa;
-  --text-purple: #a78bfa;
-  --text-green: #34d399;
-  --text-red: #f87171;
-  
-  /* Border colors */
-  --border-primary: #374151;
-  --border-secondary: #4b5563;
-  --border-accent: #6b7280;
-  
-  /* Shadow colors - darker shadows for dark mode */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
-  
-  /* Button colors */
-  --btn-primary: #3b82f6;
-  --btn-primary-hover: #60a5fa;
-  --btn-secondary: #6b7280;
-  --btn-secondary-hover: #9ca3af;
-}
-
 .accent-text {
   color: var(--text-accent);
 }
@@ -113,21 +68,8 @@ body {
     "Segoe UI Emoji",
     "Segoe UI Symbol",
     "Noto Color Emoji";
-  color: var(--text-primary, #1f2937);
-  background: var(--bg-primary, #ffffff);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-
-/* Ensure theme variables are applied immediately */
-html[data-theme="dark"] {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-}
-
-html[data-theme="light"] {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  color: #1f2937;
+  background: #ffffff;
 }
 
 /* only use this to update the style of the auth input fields. use a different class for all other input fields */

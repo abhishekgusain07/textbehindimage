@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Separator } from '@/components/ui/separator';
 import { Accordion } from '@/components/ui/accordion';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { FileUpload } from '@/components/ui/file-upload';
 import TextCustomizer from './editor/text-customizer';
 import CompareSlider from './compare-slider';
 
@@ -37,7 +38,6 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
     const [processingMessage, setProcessingMessage] = useState<string>('');
     const [showEditor, setShowEditor] = useState<boolean>(false);
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -53,13 +53,10 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
 
     const handleUploadImage = () => {
         setShowEditor(true);
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
     };
 
-    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+    const handleFileUpload = async (files: File[]) => {
+        const file = files[0];
         if (file) {
             try {
                 // Get upload URL
@@ -97,6 +94,7 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
             }
         }
     };
+
 
     const setupImage = async (imageUrl: string) => {
         try {
@@ -367,9 +365,9 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
     }
     
     return (
-        <div className='flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800'>
+        <div className='flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 '>
             {showEditor && (
-                <header className="flex items-center justify-between p-6 border-b border-gray-200/60 dark:border-gray-700/60 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl">
+                <header className="flex items-center justify-between p-6 border-b border-gray-200/60  bg-white/90  backdrop-blur-xl">
                     <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                         {project.title}
                     </h1>
@@ -422,13 +420,6 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
                 // Editor Section
                 <div className='flex flex-col items-center justify-center w-full h-screen p-8'>
                     <canvas ref={canvasRef} style={{ display: 'none' }} />
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        onChange={handleFileChange}
-                    />
 
                     <div className="flex flex-col md:flex-row items-start justify-start gap-10 w-full h-screen px-10 mt-2">
                         <div className="flex flex-col items-start justify-start w-full md:w-1/2 gap-4">
@@ -453,32 +444,22 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
                             
                             {/* Status Messages */}
                             {(isProcessingImage || isSavingImage || processingMessage) && (
-                                <div className="w-full p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                                <div className="w-full p-3 bg-blue-50  border border-blue-200  rounded-lg">
                                     <div className="flex items-center gap-2">
                                         {(isProcessingImage || isSavingImage) && (
                                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
                                         )}
-                                        <p className="text-sm text-blue-800 dark:text-blue-200">
+                                        <p className="text-sm text-blue-800 ">
                                             {processingMessage || 'Processing...'}
                                         </p>
                                     </div>
                                 </div>
                             )}
 
-                            <div className="relative w-full h-[400px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-600">
+                            <div className="relative w-full h-[400px] bg-gray-100 rounded-lg overflow-hidden border-2 border-dashed border-gray-300">
                                 {!selectedImage && (
-                                    <div className="flex flex-col items-center justify-center h-full p-6">
-                                        <div className="text-center mb-8">
-                                            <h3 className="text-lg font-semibold mb-2">Upload an Image</h3>
-                                            <p className="text-muted-foreground mb-6">
-                                                Choose an image to start adding text behind it
-                                            </p>
-                                        </div>
-                                        <div className="flex flex-col gap-4">
-                                            <Button onClick={handleUploadImage} size="lg">
-                                                Select Image
-                                            </Button>
-                                        </div>
+                                    <div className="w-full h-full">
+                                        <FileUpload onChange={handleFileUpload} />
                                     </div>
                                 )}
                         

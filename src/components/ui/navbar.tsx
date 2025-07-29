@@ -14,9 +14,7 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/hooks/useUser";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useDarkMode } from "@/hooks/useDarkMode";
 import { toast } from "sonner";
-import { Sun, Moon } from "lucide-react";
 import { Button } from "./button";
 
 export function NavbarDemo({ children }: { children: React.ReactNode }) {
@@ -24,7 +22,6 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const isLoggedIn = !!user;
   const navigate = useNavigate();
   const { signOut } = useAuthActions();
-  const { theme, toggleTheme } = useDarkMode();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -88,35 +85,13 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
     navigate("/sign-in");
   };
 
-  // Working theme toggle component
-  const ThemeToggle = ({ className = "" }: { className?: string }) => {
-    return (
-      <Button
-        onClick={() => {
-          const newTheme = theme === 'light' ? 'dark' : 'light';
-          
-          // Direct DOM manipulation for immediate effect
-          document.documentElement.setAttribute('data-theme', newTheme);
-          document.body.style.background = newTheme === 'dark' ? '#0f172a' : '#ffffff';
-          document.body.style.color = newTheme === 'dark' ? '#f1f5f9' : '#1f2937';
-          localStorage.setItem('theme', newTheme);
-          
-          toggleTheme();
-        }}
-        className={`p-2 rounded-lg border transition-colors bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 min-w-[40px] min-h-[40px] flex items-center z-50 justify-center cursor-pointer ${className}`}
-        title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-      >
-        {theme === 'light' ? '🌙' : '☀️'}
-      </Button>
-    );
-  };
 
   // Render avatar skeleton during loading
   const renderAuthUI = () => {
     if (isLoading) {
       return (
-        <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center">
-          <div className="h-5 w-5 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+        <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse flex items-center justify-center">
+          <div className="h-5 w-5 rounded-full bg-gray-300"></div>
         </div>
       );
     }
@@ -124,7 +99,6 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
     if (isLoggedIn) {
       return (
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -133,11 +107,11 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
               {getUserInitial()}
             </button>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 rounded-md z-50 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600">
+              <div className="absolute right-0 mt-2 w-48 rounded-md z-50 bg-white shadow-lg border border-gray-200">
                 <div className="py-1">
                   <button
                     onClick={() => navigate("/dashboard")}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 hover:cursor-pointer transition-colors"
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 hover:cursor-pointer transition-colors"
                   >
                     Dashboard
                   </button>
@@ -146,8 +120,8 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
                     disabled={isLoggingOut}
                     className={`block w-full text-left px-4 py-2 text-sm hover:cursor-pointer relative transition-colors ${
                       isLoggingOut 
-                        ? 'text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700' 
-                        : 'text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                        ? 'text-gray-400 bg-gray-50' 
+                        : 'text-red-600 hover:bg-gray-100'
                     }`}
                   >
                     {isLoggingOut ? (
@@ -169,7 +143,6 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
 
     return (
       <div className="flex items-center gap-2">
-        <ThemeToggle />
         <NavbarButton variant="secondary" onClick={handleLogin}>
           Login
         </NavbarButton>
@@ -181,17 +154,13 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const renderMobileAuthUI = () => {
     if (isLoading) {
       return (
-        <div className="w-full h-10 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
+        <div className="w-full h-10 bg-gray-200 rounded-md animate-pulse"></div>
       );
     }
 
     if (isLoggedIn) {
       return (
         <>
-          <div className="flex items-center justify-between w-full mb-4">
-            <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Theme</span>
-            <ThemeToggle />
-          </div>
           <NavbarButton
             onClick={() => {
               navigate("/dashboard");
@@ -226,10 +195,6 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
 
     return (
       <>
-        <div className="flex items-center justify-between w-full mb-4">
-          <span className="text-sm font-medium text-gray-800 dark:text-gray-200">Theme</span>
-          <ThemeToggle />
-        </div>
         <NavbarButton
           onClick={() => {
             navigate("/sign-in");
@@ -273,7 +238,7 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
                 key={`mobile-link-${idx}`}
                 href={item.link}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="relative text-gray-800 hover:text-blue-600 transition-colors"
               >
                 <span className="block font-medium">{item.name}</span>
               </a>

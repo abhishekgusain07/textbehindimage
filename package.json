@@ -37,9 +37,10 @@
     "react-color": "^2.19.3",
     "react-compare-slider": "^3.1.0",
     "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
     "react-router-dom": "^7.7.1",
     "sonner": "^2.0.3",
-    "tailwind-merge": "^3.1.0",
+    "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
