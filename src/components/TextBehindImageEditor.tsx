@@ -36,7 +36,6 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
     const [isProcessingImage, setIsProcessingImage] = useState<boolean>(false);
     const [isSavingImage, setIsSavingImage] = useState<boolean>(false);
     const [processingMessage, setProcessingMessage] = useState<string>('');
-    const [showEditor, setShowEditor] = useState<boolean>(false);
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -46,14 +45,9 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
         }
         if (project?.originalImageUrl) {
             setSelectedImage(project.originalImageUrl);
-            setShowEditor(true);
             setIsImageSetupDone(true);
         }
     }, [project]);
-
-    const handleUploadImage = () => {
-        setShowEditor(true);
-    };
 
     const handleFileUpload = async (files: File[]) => {
         const file = files[0];
@@ -94,7 +88,6 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
             }
         }
     };
-
 
     const setupImage = async (imageUrl: string) => {
         try {
@@ -184,7 +177,6 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
         setIsProcessingImage(false);
         setIsSavingImage(false);
         setProcessingMessage('');
-        setShowEditor(false);
         onBack();
     };
 
@@ -365,104 +357,101 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
     }
     
     return (
-        <div className='flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 '>
-            {showEditor && (
-                <header className="flex items-center justify-between p-6 border-b border-gray-200/60  bg-white/90  backdrop-blur-xl">
-                    <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        {project.title}
-                    </h1>
-                    <div className="flex items-center gap-4">
-                        {selectedImage && (
-                            <>
+        <div className='flex flex-col min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100'>
+            <canvas ref={canvasRef} style={{ display: 'none' }} />
+            
+            {!selectedImage ? (
+                // Phase 1: Centered File Upload
+                <div className='flex items-center justify-center min-h-screen p-8'>
+                    <div className="w-full max-w-2xl">
+                        <FileUpload onChange={handleFileUpload} />
+                    </div>
+                </div>
+            ) : isProcessingImage ? (
+                // Phase 2: Processing State
+                <div className='flex flex-col items-center justify-center min-h-screen p-8'>
+                    <div className="text-center max-w-2xl">
+                        <div className="mb-8">
+                            <img
+                                src={selectedImage}
+                                alt="Uploaded"
+                                className="w-full max-w-lg mx-auto rounded-lg shadow-lg"
+                            />
+                        </div>
+                        
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="flex items-center gap-3">
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                                <p className="text-lg font-medium text-gray-700">
+                                    {processingMessage || 'Processing your image...'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                // Phase 3: Split Layout with Header
+                <div className='flex flex-col h-screen'>
+                    <header className="flex items-center justify-between p-6 border-b border-gray-200/60 bg-white/90 backdrop-blur-xl">
+                        <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            {project.title}
+                        </h1>
+                        <div className="flex items-center gap-4">
+                            <Button 
+                                onClick={saveCompositeImage} 
+                                className='hidden md:flex'
+                                disabled={isSavingImage || isProcessingImage}
+                                variant="outline"
+                            >
+                                {isSavingImage ? 'Saving...' : 'Save image'}
+                            </Button>
+                            <Button 
+                                onClick={handleEditMoreImages}
+                                variant="outline"
+                                className='hidden md:flex'
+                            >
+                                Back to Dashboard
+                            </Button>
+                        </div>
+                    </header>
+                    
+                    <div className='flex flex-col md:flex-row gap-6 flex-1 p-6'>
+                        {/* Left Side - Image Preview */}
+                        <div className="flex flex-col w-full md:w-1/2 gap-4">
+                            {/* Mobile buttons */}
+                            <div className='flex items-center gap-2 md:hidden'>
                                 <Button 
                                     onClick={saveCompositeImage} 
-                                    className='hidden md:flex'
                                     disabled={isSavingImage || isProcessingImage}
-                                    variant="outline"
+                                    size="sm"
                                 >
                                     {isSavingImage ? 'Saving...' : 'Save image'}
                                 </Button>
                                 <Button 
                                     onClick={handleEditMoreImages}
                                     variant="outline"
-                                    className='hidden md:flex'
+                                    size="sm"
                                 >
                                     Back to Dashboard
                                 </Button>
-                            </>
-                        )}
-                    </div>
-                </header>
-            )}
-            
-            {!showEditor ? (
-                // Clean Landing Page - No Header
-                <div className='flex flex-col items-center justify-center w-full min-h-screen p-2 md:p-8'>
-                    {/* Button at Top Center */}
-                    <div className="mb-2 md:mb-4">
-                        <Button 
-                            onClick={handleUploadImage}
-                            size="lg"
-                            className="bg-[#191919] hover:bg-[#2a2a2a] text-white border-0 px-6 py-3 md:px-8 text-base md:text-lg font-medium rounded-lg transition-all duration-300"
-                        >
-                            Upload Image
-                        </Button>
-                    </div>
-
-                    {/* Demo description */}
-                    <div className="w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl mx-auto px-2 text-center">
-                        <p className="text-lg text-muted-foreground mb-4">
-                            Create stunning text-behind-image effects with background removal and 3D text positioning
-                        </p>
-                    </div>
-                </div>
-            ) : (
-                // Editor Section
-                <div className='flex flex-col items-center justify-center w-full h-screen p-8'>
-                    <canvas ref={canvasRef} style={{ display: 'none' }} />
-
-                    <div className="flex flex-col md:flex-row items-start justify-start gap-10 w-full h-screen px-10 mt-2">
-                        <div className="flex flex-col items-start justify-start w-full md:w-1/2 gap-4">
-                            <div className='flex items-center gap-2'>
-                                <Button 
-                                    onClick={saveCompositeImage} 
-                                    className='md:hidden'
-                                    disabled={isSavingImage || isProcessingImage}
-                                >
-                                    {isSavingImage ? 'Saving...' : 'Save image'}
-                                </Button>
-                                {selectedImage && (
-                                    <Button 
-                                        onClick={handleEditMoreImages}
-                                        variant="outline"
-                                        className='md:hidden'
-                                    >
-                                        Back to Dashboard
-                                    </Button>
-                                )}
                             </div>
                             
                             {/* Status Messages */}
                             {(isProcessingImage || isSavingImage || processingMessage) && (
-                                <div className="w-full p-3 bg-blue-50  border border-blue-200  rounded-lg">
+                                <div className="w-full p-3 bg-blue-50 border border-blue-200 rounded-lg">
                                     <div className="flex items-center gap-2">
                                         {(isProcessingImage || isSavingImage) && (
                                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
                                         )}
-                                        <p className="text-sm text-blue-800 ">
+                                        <p className="text-sm text-blue-800">
                                             {processingMessage || 'Processing...'}
                                         </p>
                                     </div>
                                 </div>
                             )}
 
+                            {/* Image Preview Container */}
                             <div className="relative w-full h-[400px] bg-gray-100 rounded-lg overflow-hidden border-2 border-dashed border-gray-300">
-                                {!selectedImage && (
-                                    <div className="w-full h-full">
-                                        <FileUpload onChange={handleFileUpload} />
-                                    </div>
-                                )}
-                        
                                 {selectedImage && (
                                     <img
                                         src={selectedImage}
@@ -502,6 +491,7 @@ export function TextBehindImageEditor({ projectId, onBack }: TextBehindImageEdit
                             </div>
                         </div>
                             
+                        {/* Right Side - Text Editor */}
                         <div className="w-full md:w-1/2 h-full">
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="text-lg font-semibold">Text Layers</h2>
