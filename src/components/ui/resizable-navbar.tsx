@@ -237,12 +237,12 @@ export const NavbarLogo = () => {
       onClick={() => navigate('/')}
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black hover:opacity-80 transition-opacity"
     >
-      <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+      <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-300 rounded-lg flex items-center justify-center">
         <span className="text-white font-bold text-sm">TB</span>
       </div>
 
       <div className="font-sans">
-        <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+        <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
           TextBehind
         </span>
       </div>

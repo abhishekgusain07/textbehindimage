@@ -99,9 +99,9 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
       return (
         <div className="flex items-center gap-2">
           <div className="relative" ref={dropdownRef}>
-            <button
+          <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-medium cursor-pointer hover:opacity-90 transition-opacity"
+              className="h-10 w-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-medium hover:bg-blue-100 border border-blue-200 hover:border-blue-300 transition-colors duration-150"
             >
               {getUserInitial()}
             </button>
