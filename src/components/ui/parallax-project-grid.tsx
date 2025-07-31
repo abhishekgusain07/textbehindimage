@@ -153,7 +153,7 @@ export const ParallaxProjectGrid = ({
 }) => {
   const gridRef = useRef<any>(null);
   const [hovered, setHovered] = useState<number | null>(null);
-  
+
   const { scrollYProgress } = useScroll({
     container: gridRef,
     offset: ['start start', 'end start'],
