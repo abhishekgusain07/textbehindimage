@@ -14,7 +14,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { FocusCards } from '@/components/ui/focus-card';
+import { ParallaxProjectGrid } from '@/components/ui/parallax-project-grid';
 import { Plus } from 'lucide-react';
 
 export function Dashboard() {
@@ -203,7 +203,7 @@ export function Dashboard() {
             </Button>
           </div>
         ) : (
-          <FocusCards
+          <ParallaxProjectGrid
             projects={userProjects}
             onEdit={setEditingProject}
             onDelete={handleDeleteProject}

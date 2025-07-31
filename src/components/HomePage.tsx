@@ -36,9 +36,9 @@ export function HomePage() {
           </p>
           <div className="mt-8 flex flex-row items-center justify-center gap-4 sm:flex-row sm:gap-6">
             <Button
-              onClick={() => navigate("/sign-in")}
-              variant={"secondary"}
-              className='bg-black text-white w-[8vw]'
+              onClick={() => navigate('/sign-in')}
+              variant={'secondary'}
+              className="bg-black text-white w-[8vw]"
             >
               Try Now
             </Button>
