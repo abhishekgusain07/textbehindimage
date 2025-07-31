@@ -325,19 +325,22 @@ export function TextBehindImageEditor({
           const chars = textSet.text.split('');
           let currentX = 0;
           // Calculate total width to center properly (use the already calculated scaledLetterSpacing)
-          const totalWidth = chars.reduce((width, char, i) => {
-            const charWidth = ctx.measureText(char).width;
-            return (
-              width +
-              charWidth +
-              (i < chars.length - 1 ? scaledLetterSpacing : 0)
-            );
-          }, 0);
+          const totalWidth = chars.reduce(
+            (width: number, char: string, i: number) => {
+              const charWidth = ctx.measureText(char).width;
+              return (
+                width +
+                charWidth +
+                (i < chars.length - 1 ? scaledLetterSpacing : 0)
+              );
+            },
+            0
+          );
 
           const startX = -totalWidth / 2;
           currentX = startX;
 
-          chars.forEach((char, i) => {
+          chars.forEach((char: string, i: number) => {
             ctx.fillText(char, currentX, 0);
             const charWidth = ctx.measureText(char).width;
             currentX +=

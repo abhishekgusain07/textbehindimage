@@ -139,8 +139,8 @@ ProjectCard.displayName = 'ProjectCard';
 export type ProjectCardData = {
   _id: string;
   title: string;
-  processedImageUrl?: string;
-  originalImageUrl?: string;
+  processedImageUrl?: string | null;
+  originalImageUrl?: string | null;
   textLayers: any[];
   isPublic: boolean;
   updatedAt: number;
