@@ -13,6 +13,8 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, X } from 'lucide-react';
 
 interface PasswordValidation {
   minLength: boolean;
@@ -28,13 +30,14 @@ export function SignInPage() {
   const [submitting, setSubmitting] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordValidation, setPasswordValidation] = useState<PasswordValidation>({
-    minLength: false,
-    hasUppercase: false,
-    hasLowercase: false,
-    hasNumber: false,
-    hasSpecialChar: false,
-  });
+  const [passwordValidation, setPasswordValidation] =
+    useState<PasswordValidation>({
+      minLength: false,
+      hasUppercase: false,
+      hasLowercase: false,
+      hasNumber: false,
+      hasSpecialChar: false,
+    });
   const navigate = useNavigate();
 
   const validatePassword = (password: string): PasswordValidation => {
@@ -118,24 +121,23 @@ export function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+    <div className="h-[80vh] flex items-center justify-center p-4 bg-gray-50">
       {/* Main Container Box */}
-      <div className="w-[80vw] h-[80vh] max-w-6xl max-h-[600px] min-h-[500px] flex rounded-2xl overflow-hidden shadow-2xl bg-white">
+      <div className="w-[80vw] h-[85vh] max-w-6xl max-h-[700px] min-h-[600px] flex rounded-2xl overflow-hidden shadow-2xl bg-white">
         {/* Left Panel - Image */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
           <img
-            src="/compare-images/a.jpg"
+            src="/compare-images/g.png"
             alt="Text Behind Image"
             className="object-cover w-full h-full"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
           <div className="absolute bottom-8 left-8 text-white">
             <p className="text-sm opacity-80">
-              Chosen by Parents, Loved by Kids
+              Professional Text Effects
             </p>
             <p className="text-xs opacity-60">
-              Safe, educational stories that ignite with your child's
-              imagination
+              Create stunning visuals with text that seamlessly blends behind your images
             </p>
           </div>
         </div>
@@ -145,11 +147,10 @@ export function SignInPage() {
           <div className="w-full max-w-md space-y-8">
             <div className="text-center space-y-2">
               <h1 className="text-3xl font-bold text-black">
-                Dive Into the World of Stories
+                Create Stunning Text Behind Images
               </h1>
               <p className="text-sm text-gray-600">
-                Discover fun, interactive stories that spark your child's
-                imagination
+                Transform your photos with beautiful text effects that appear behind your subjects
               </p>
             </div>
 
@@ -232,7 +233,7 @@ export function SignInPage() {
                     <Button
                       type="submit"
                       disabled={submitting}
-                      className="w-full h-12 rounded-lg font-medium bg-amber-700 hover:bg-amber-800 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full h-12 rounded-lg font-medium bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                       {submitting ? 'Signing in...' : 'Login'}
                     </Button>
@@ -253,11 +254,7 @@ export function SignInPage() {
                     onClick={handleGoogleSignIn}
                     className="w-full h-12 flex items-center justify-center gap-3 border-gray-300 bg-white text-black hover:bg-gray-50"
                   >
-                    <img
-                      src="/google.png"
-                      alt="Google"
-                      className="w-5 h-5"
-                    />
+                    <img src="/google.png" alt="Google" className="w-5 h-5" />
                     Continue with Google
                   </Button>
                   <p className="text-center text-sm text-gray-600">
@@ -304,7 +301,9 @@ export function SignInPage() {
                             name="password"
                             type="password"
                             value={password}
-                            onChange={(e) => handlePasswordChange(e.target.value)}
+                            onChange={(e) =>
+                              handlePasswordChange(e.target.value)
+                            }
                             placeholder="Create a password"
                             required
                             className="w-full h-12 px-4 pr-12 border rounded-lg bg-white border-gray-300 text-black placeholder-gray-500 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
@@ -316,36 +315,79 @@ export function SignInPage() {
                             👁
                           </button>
                         </div>
-                        
+
                         {/* Password Validation Indicators */}
-                        {password && (
-                          <div className="mt-3 space-y-1">
-                            <div className="text-xs space-y-1">
-                              <div className={`flex items-center gap-2 ${passwordValidation.minLength ? 'text-green-600' : 'text-red-500'}`}>
-                                <span className="text-sm">{passwordValidation.minLength ? '✅' : '❌'}</span>
-                                <span>At least 8 characters</span>
+                        <AnimatePresence>
+                          {password && !isPasswordValid() && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="mt-3 space-y-1"
+                            >
+                              <div className="text-xs space-y-1">
+                                {!passwordValidation.minLength && (
+                                  <motion.div
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -10 }}
+                                    className="flex items-center gap-2 text-red-500"
+                                  >
+                                    <X className="w-3 h-3" />
+                                    <span>At least 8 characters</span>
+                                  </motion.div>
+                                )}
+                                {!passwordValidation.hasUppercase && (
+                                  <motion.div
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -10 }}
+                                    className="flex items-center gap-2 text-red-500"
+                                  >
+                                    <X className="w-3 h-3" />
+                                    <span>One uppercase letter</span>
+                                  </motion.div>
+                                )}
+                                {!passwordValidation.hasLowercase && (
+                                  <motion.div
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -10 }}
+                                    className="flex items-center gap-2 text-red-500"
+                                  >
+                                    <X className="w-3 h-3" />
+                                    <span>One lowercase letter</span>
+                                  </motion.div>
+                                )}
+                                {!passwordValidation.hasNumber && (
+                                  <motion.div
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -10 }}
+                                    className="flex items-center gap-2 text-red-500"
+                                  >
+                                    <X className="w-3 h-3" />
+                                    <span>One number</span>
+                                  </motion.div>
+                                )}
+                                {!passwordValidation.hasSpecialChar && (
+                                  <motion.div
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -10 }}
+                                    className="flex items-center gap-2 text-red-500"
+                                  >
+                                    <X className="w-3 h-3" />
+                                    <span>One special character</span>
+                                  </motion.div>
+                                )}
                               </div>
-                              <div className={`flex items-center gap-2 ${passwordValidation.hasUppercase ? 'text-green-600' : 'text-red-500'}`}>
-                                <span className="text-sm">{passwordValidation.hasUppercase ? '✅' : '❌'}</span>
-                                <span>One uppercase letter</span>
-                              </div>
-                              <div className={`flex items-center gap-2 ${passwordValidation.hasLowercase ? 'text-green-600' : 'text-red-500'}`}>
-                                <span className="text-sm">{passwordValidation.hasLowercase ? '✅' : '❌'}</span>
-                                <span>One lowercase letter</span>
-                              </div>
-                              <div className={`flex items-center gap-2 ${passwordValidation.hasNumber ? 'text-green-600' : 'text-red-500'}`}>
-                                <span className="text-sm">{passwordValidation.hasNumber ? '✅' : '❌'}</span>
-                                <span>One number</span>
-                              </div>
-                              <div className={`flex items-center gap-2 ${passwordValidation.hasSpecialChar ? 'text-green-600' : 'text-red-500'}`}>
-                                <span className="text-sm">{passwordValidation.hasSpecialChar ? '✅' : '❌'}</span>
-                                <span>One special character</span>
-                              </div>
-                            </div>
-                          </div>
-                        )}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
-                      
+
                       <div className="space-y-2">
                         <Label
                           htmlFor="confirm-password"
@@ -371,14 +413,22 @@ export function SignInPage() {
                             👁
                           </button>
                         </div>
-                        
+
                         {/* Password Match Indicator */}
-                        {confirmPassword && (
-                          <div className={`text-xs flex items-center gap-2 mt-2 ${doPasswordsMatch() ? 'text-green-600' : 'text-red-500'}`}>
-                            <span className="text-sm">{doPasswordsMatch() ? '✅' : '❌'}</span>
-                            <span>{doPasswordsMatch() ? 'Passwords match' : 'Passwords do not match'}</span>
-                          </div>
-                        )}
+                        <AnimatePresence>
+                          {confirmPassword && !doPasswordsMatch() && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="text-xs flex items-center gap-2 mt-2 text-red-500"
+                            >
+                              <X className="w-3 h-3" />
+                              <span>Passwords do not match</span>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                       <div className="flex items-center space-x-2">
                         <input
@@ -397,7 +447,7 @@ export function SignInPage() {
                     <Button
                       type="submit"
                       disabled={submitting}
-                      className="w-full h-12 rounded-lg font-medium bg-amber-700 hover:bg-amber-800 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full h-12 rounded-lg font-medium bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                       {submitting ? 'Creating account...' : 'Create Account'}
                     </Button>
@@ -418,11 +468,7 @@ export function SignInPage() {
                     onClick={handleGoogleSignIn}
                     className="w-full h-12 flex items-center justify-center gap-3 border-gray-300 bg-white text-black hover:bg-gray-50"
                   >
-                    <img
-                      src="/google.png"
-                      alt="Google"
-                      className="w-5 h-5"
-                    />
+                    <img src="/google.png" alt="Google" className="w-5 h-5" />
                     Continue with Google
                   </Button>
 

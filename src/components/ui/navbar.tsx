@@ -26,19 +26,19 @@ export function NavbarDemo({ children }: { children: React.ReactNode }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const navItems = [
-    {
-      name: 'Features',
-      link: '/#features',
-    },
-    {
-      name: 'Examples',
-      link: '/dashboard',
-    },
-    {
-      name: 'About',
-      link: '/#about',
-    },
+  const navItems: { name: string; link: string }[] = [
+    // {
+    //   name: 'Features',
+    //   link: '/#features',
+    // },
+    // {
+    //   name: 'Examples',
+    //   link: '/dashboard',
+    // },
+    // {
+    //   name: 'About',
+    //   link: '/#about',
+    // },
   ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
