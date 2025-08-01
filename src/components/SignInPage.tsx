@@ -51,6 +51,16 @@ export function SignInPage() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await signIn('google');
+      toast.success('Signed in with Google successfully!');
+      navigate('/dashboard');
+    } catch (error: any) {
+      toast.error('Failed to sign in with Google. Please try again.');
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
       {/* Main Container Box */}
@@ -185,21 +195,13 @@ export function SignInPage() {
                     <Button
                       type="button"
                       variant="outline"
+                      onClick={handleGoogleSignIn}
                       className="h-12 flex items-center justify-center gap-2 border-gray-300 bg-white text-black hover:bg-gray-50"
                     >
                       <span className="text-lg">G</span>
                       Login with Google
                     </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="h-12 flex items-center justify-center gap-2 border-gray-300 bg-white text-black hover:bg-gray-50"
-                    >
-                      <span className="text-lg">🍎</span>
-                      Login with Apple
-                    </Button>
                   </div>
-
                   <p className="text-center text-sm text-gray-600">
                     Don't have an account?{' '}
                     <button
@@ -291,10 +293,11 @@ export function SignInPage() {
                     <Button
                       type="button"
                       variant="outline"
+                      onClick={handleGoogleSignIn}
                       className="h-12 flex items-center justify-center gap-2 border-gray-300 bg-white text-black hover:bg-gray-50"
                     >
                       <span className="text-lg">G</span>
-                      Login with Google
+                      Sign up with Google
                     </Button>
                     <Button
                       type="button"
