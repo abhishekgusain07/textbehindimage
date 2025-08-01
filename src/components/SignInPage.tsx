@@ -14,15 +14,71 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
 
+interface PasswordValidation {
+  minLength: boolean;
+  hasUppercase: boolean;
+  hasLowercase: boolean;
+  hasNumber: boolean;
+  hasSpecialChar: boolean;
+}
+
 export function SignInPage() {
   const { signIn } = useAuthActions();
   const [flow, setFlow] = useState<'signIn' | 'signUp'>('signIn');
   const [submitting, setSubmitting] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordValidation, setPasswordValidation] = useState<PasswordValidation>({
+    minLength: false,
+    hasUppercase: false,
+    hasLowercase: false,
+    hasNumber: false,
+    hasSpecialChar: false,
+  });
   const navigate = useNavigate();
+
+  const validatePassword = (password: string): PasswordValidation => {
+    return {
+      minLength: password.length >= 8,
+      hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
+      hasNumber: /\d/.test(password),
+      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    };
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    if (flow === 'signUp') {
+      setPasswordValidation(validatePassword(value));
+    }
+  };
+
+  const isPasswordValid = () => {
+    return Object.values(passwordValidation).every(Boolean);
+  };
+
+  const doPasswordsMatch = () => {
+    return password === confirmPassword;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+
+    // Validate signup requirements
+    if (flow === 'signUp') {
+      if (!isPasswordValid()) {
+        toast.error('Please meet all password requirements');
+        setSubmitting(false);
+        return;
+      }
+      if (!doPasswordsMatch()) {
+        toast.error('Passwords do not match');
+        setSubmitting(false);
+        return;
+      }
+    }
 
     const formData = new FormData(e.target as HTMLFormElement);
     formData.set('flow', flow);
@@ -85,7 +141,7 @@ export function SignInPage() {
         </div>
 
         {/* Right Panel - Form */}
-        <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-white">
+        <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-white overflow-y-scroll">
           <div className="w-full max-w-md space-y-8">
             <div className="text-center space-y-2">
               <h1 className="text-3xl font-bold text-black">
@@ -191,17 +247,19 @@ export function SignInPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handleGoogleSignIn}
-                      className="h-12 flex items-center justify-center gap-2 border-gray-300 bg-white text-black hover:bg-gray-50"
-                    >
-                      <span className="text-lg">G</span>
-                      Login with Google
-                    </Button>
-                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleGoogleSignIn}
+                    className="w-full h-12 flex items-center justify-center gap-3 border-gray-300 bg-white text-black hover:bg-gray-50"
+                  >
+                    <img
+                      src="/google.png"
+                      alt="Google"
+                      className="w-5 h-5"
+                    />
+                    Continue with Google
+                  </Button>
                   <p className="text-center text-sm text-gray-600">
                     Don't have an account?{' '}
                     <button
@@ -245,6 +303,8 @@ export function SignInPage() {
                             id="signup-password"
                             name="password"
                             type="password"
+                            value={password}
+                            onChange={(e) => handlePasswordChange(e.target.value)}
                             placeholder="Create a password"
                             required
                             className="w-full h-12 px-4 pr-12 border rounded-lg bg-white border-gray-300 text-black placeholder-gray-500 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
@@ -256,6 +316,69 @@ export function SignInPage() {
                             👁
                           </button>
                         </div>
+                        
+                        {/* Password Validation Indicators */}
+                        {password && (
+                          <div className="mt-3 space-y-1">
+                            <div className="text-xs space-y-1">
+                              <div className={`flex items-center gap-2 ${passwordValidation.minLength ? 'text-green-600' : 'text-red-500'}`}>
+                                <span className="text-sm">{passwordValidation.minLength ? '✅' : '❌'}</span>
+                                <span>At least 8 characters</span>
+                              </div>
+                              <div className={`flex items-center gap-2 ${passwordValidation.hasUppercase ? 'text-green-600' : 'text-red-500'}`}>
+                                <span className="text-sm">{passwordValidation.hasUppercase ? '✅' : '❌'}</span>
+                                <span>One uppercase letter</span>
+                              </div>
+                              <div className={`flex items-center gap-2 ${passwordValidation.hasLowercase ? 'text-green-600' : 'text-red-500'}`}>
+                                <span className="text-sm">{passwordValidation.hasLowercase ? '✅' : '❌'}</span>
+                                <span>One lowercase letter</span>
+                              </div>
+                              <div className={`flex items-center gap-2 ${passwordValidation.hasNumber ? 'text-green-600' : 'text-red-500'}`}>
+                                <span className="text-sm">{passwordValidation.hasNumber ? '✅' : '❌'}</span>
+                                <span>One number</span>
+                              </div>
+                              <div className={`flex items-center gap-2 ${passwordValidation.hasSpecialChar ? 'text-green-600' : 'text-red-500'}`}>
+                                <span className="text-sm">{passwordValidation.hasSpecialChar ? '✅' : '❌'}</span>
+                                <span>One special character</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label
+                          htmlFor="confirm-password"
+                          className="text-sm font-medium text-black"
+                        >
+                          Confirm Password
+                        </Label>
+                        <div className="relative">
+                          <Input
+                            id="confirm-password"
+                            name="confirmPassword"
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            placeholder="Confirm your password"
+                            required
+                            className="w-full h-12 px-4 pr-12 border rounded-lg bg-white border-gray-300 text-black placeholder-gray-500 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                          />
+                          <button
+                            type="button"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          >
+                            👁
+                          </button>
+                        </div>
+                        
+                        {/* Password Match Indicator */}
+                        {confirmPassword && (
+                          <div className={`text-xs flex items-center gap-2 mt-2 ${doPasswordsMatch() ? 'text-green-600' : 'text-red-500'}`}>
+                            <span className="text-sm">{doPasswordsMatch() ? '✅' : '❌'}</span>
+                            <span>{doPasswordsMatch() ? 'Passwords match' : 'Passwords do not match'}</span>
+                          </div>
+                        )}
                       </div>
                       <div className="flex items-center space-x-2">
                         <input
@@ -289,25 +412,19 @@ export function SignInPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handleGoogleSignIn}
-                      className="h-12 flex items-center justify-center gap-2 border-gray-300 bg-white text-black hover:bg-gray-50"
-                    >
-                      <span className="text-lg">G</span>
-                      Sign up with Google
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="h-12 flex items-center justify-center gap-2 border-gray-300 bg-white text-black hover:bg-gray-50"
-                    >
-                      <span className="text-lg">🍎</span>
-                      Login with Apple
-                    </Button>
-                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleGoogleSignIn}
+                    className="w-full h-12 flex items-center justify-center gap-3 border-gray-300 bg-white text-black hover:bg-gray-50"
+                  >
+                    <img
+                      src="/google.png"
+                      alt="Google"
+                      className="w-5 h-5"
+                    />
+                    Continue with Google
+                  </Button>
 
                   <p className="text-center text-sm text-gray-600">
                     Already have an account?{' '}
