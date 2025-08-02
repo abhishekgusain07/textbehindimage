@@ -90,19 +90,22 @@ export function SignInPage() {
       await signIn('password', formData);
       toast.success(
         flow === 'signIn'
-          ? 'Signed in successfully!'
-          : 'Account created successfully!'
+          ? 'Welcome back! You\'re now signed in.'
+          : 'Welcome! Your account has been created successfully.'
       );
       navigate('/dashboard');
     } catch (error: any) {
       let toastTitle = '';
       if (error.message.includes('Invalid password')) {
         toastTitle = 'Invalid password. Please try again.';
+      } else if (error.message.includes('User not found') || error.message.includes('No user found')) {
+        toastTitle = flow === 'signIn' 
+          ? 'No account found with this email. Try signing up instead.'
+          : 'An account with this email already exists. Try signing in instead.';
       } else {
-        toastTitle =
-          flow === 'signIn'
-            ? 'Could not sign in, did you mean to sign up?'
-            : 'Could not sign up, did you mean to sign in?';
+        toastTitle = flow === 'signIn'
+          ? 'Sign in failed. Please check your credentials.'
+          : 'Account creation failed. Please try again.';
       }
       toast.error(toastTitle);
     } finally {
@@ -113,17 +116,18 @@ export function SignInPage() {
   const handleGoogleSignIn = async () => {
     try {
       await signIn('google');
-      toast.success('Signed in with Google successfully!');
+      toast.success('Welcome! You\'re now signed in with Google.');
       navigate('/dashboard');
     } catch (error: any) {
-      toast.error('Failed to sign in with Google. Please try again.');
+      toast.error('Google sign-in was cancelled or failed. Please try again.');
     }
   };
 
   return (
     <div className="h-[80vh] flex items-center justify-center p-4 bg-gray-50">
       {/* Main Container Box */}
-      <div className="w-[80vw] h-[85vh] max-w-6xl max-h-[700px] min-h-[600px] flex rounded-2xl overflow-hidden shadow-2xl bg-white">
+      <div className="w-[80vw] h-[85vh] max-w-6xl max-h-[700px] min-h-[600px] flex rounded-2xl overflow-hidden shadow-2xl 
+      bg-white">
         {/* Left Panel - Image */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
           <img
@@ -133,11 +137,10 @@ export function SignInPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
           <div className="absolute bottom-8 left-8 text-white">
-            <p className="text-sm opacity-80">
-              Professional Text Effects
-            </p>
+            <p className="text-sm opacity-80">Professional Text Effects</p>
             <p className="text-xs opacity-60">
-              Create stunning visuals with text that seamlessly blends behind your images
+              Create stunning visuals with text that seamlessly blends behind
+              your images
             </p>
           </div>
         </div>
@@ -150,7 +153,8 @@ export function SignInPage() {
                 Create Stunning Text Behind Images
               </h1>
               <p className="text-sm text-gray-600">
-                Transform your photos with beautiful text effects that appear behind your subjects
+                Transform your photos with beautiful text effects that appear
+                behind your subjects
               </p>
             </div>
 
